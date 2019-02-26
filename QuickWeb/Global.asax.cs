@@ -30,11 +30,10 @@ namespace QuickWeb
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             // 使用之前请根据需要配置Bundles文件
             //BundleConfig.RegisterBundles(BundleTable.Bundles);
-            AutofacConfig.Register();
             StartupConfig.Startup();          
         }
 
-                void Application_BeginRequest()
+        void Application_BeginRequest()
         {
             if (EnableRedis)
             {

@@ -1,4 +1,6 @@
 ﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\linq2db.MySql.2.6.4\build\linq2db.MySql.props" Condition="Exists('..\packages\linq2db.MySql.2.6.4\build\linq2db.MySql.props')" />
+  <Import Project="..\packages\linq2db.t4models.2.6.4\build\linq2db.t4models.props" Condition="Exists('..\packages\linq2db.t4models.2.6.4\build\linq2db.t4models.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -55,14 +57,26 @@
     <Reference Include="AutoMapper, Version=8.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.8.0.0\lib\net461\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="Dapper, Version=1.50.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.50.7\lib\net451\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentAssertions, Version=5.6.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentAssertions.5.6.0\lib\net45\FluentAssertions.dll</HintPath>
+    </Reference>
     <Reference Include="Hangfire.Autofac, Version=2.3.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Hangfire.Autofac.2.3.1\lib\net45\Hangfire.Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Hangfire.Console, Version=1.4.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hangfire.Console.1.4.2\lib\net45\Hangfire.Console.dll</HintPath>
     </Reference>
     <Reference Include="Hangfire.Core, Version=1.6.22.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Hangfire.Core.1.6.22\lib\net45\Hangfire.Core.dll</HintPath>
     </Reference>
     <Reference Include="Hangfire.MySql, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Hangfire.MySql.0.0.2\lib\net45\Hangfire.MySql.dll</HintPath>
+      <HintPath>..\packages\Hangfire.MySqlStorage.1.0.7\lib\net45\Hangfire.MySql.dll</HintPath>
+    </Reference>
+    <Reference Include="linq2db, Version=2.6.4.0, Culture=neutral, PublicKeyToken=e41013125f9e410a, processorArchitecture=MSIL">
+      <HintPath>..\packages\linq2db.2.6.4\lib\net46\linq2db.dll</HintPath>
     </Reference>
     <Reference Include="Masuit.Tools, Version=2.2.4.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Masuit.Tools.2.2.4.2\lib\net45\Masuit.Tools.dll</HintPath>
@@ -286,6 +300,18 @@
       <LastGenOutput>TempController.cs</LastGenOutput>
     </Content>
     <Content Include="Global.asax" />
+    <Content Include="LinqToDB.Templates\CopyMe.Access.tt.txt" />
+    <Content Include="LinqToDB.Templates\CopyMe.DB2.tt.txt" />
+    <Content Include="LinqToDB.Templates\CopyMe.Firebird.tt.txt" />
+    <Content Include="LinqToDB.Templates\CopyMe.Informix.tt.txt" />
+    <Content Include="LinqToDB.Templates\CopyMe.MySql.tt.txt" />
+    <Content Include="LinqToDB.Templates\CopyMe.Oracle.tt.txt" />
+    <Content Include="LinqToDB.Templates\CopyMe.PostgreSQL.tt.txt" />
+    <Content Include="LinqToDB.Templates\CopyMe.SapHana.tt.txt" />
+    <Content Include="LinqToDB.Templates\CopyMe.SqlCe.tt.txt" />
+    <Content Include="LinqToDB.Templates\CopyMe.SQLite.tt.txt" />
+    <Content Include="LinqToDB.Templates\CopyMe.SqlServer.tt.txt" />
+    <Content Include="LinqToDB.Templates\CopyMe.Sybase.tt.txt" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -372,6 +398,49 @@
     <Content Include="Assets\layui\2.4.5\font\iconfont.ttf" />
     <Content Include="Assets\layui\2.4.5\font\iconfont.woff" />
     <Content Include="Controllers\T4\MultipleOutputHelper.ttinclude" />
+    <Content Include="LinqToDB.Templates\Validation.ttinclude" />
+    <Content Include="LinqToDB.Templates\T4Model.ttinclude" />
+    <Content Include="LinqToDB.Templates\README.md" />
+    <Content Include="LinqToDB.Templates\PluralizationService.ttinclude" />
+    <Content Include="LinqToDB.Templates\ObsoleteAttributes.ttinclude" />
+    <Content Include="LinqToDB.Templates\NotifyPropertyChanged.ttinclude" />
+    <Content Include="LinqToDB.Templates\NotifyDataErrorInfo.ttinclude" />
+    <Content Include="LinqToDB.Templates\MultipleFiles.ttinclude" />
+    <Content Include="LinqToDB.Templates\LinqToDB.ttinclude" />
+    <Content Include="LinqToDB.Templates\LinqToDB.Tools.ttinclude" />
+    <Content Include="LinqToDB.Templates\LinqToDB.Sybase.ttinclude" />
+    <Content Include="LinqToDB.Templates\LinqToDB.Sybase.Tools.ttinclude" />
+    <Content Include="LinqToDB.Templates\LinqToDB.SqlServer.ttinclude" />
+    <Content Include="LinqToDB.Templates\LinqToDB.SqlServer.Tools.ttinclude" />
+    <Content Include="LinqToDB.Templates\LinqToDB.SqlServer.SqlTypes.ttinclude" />
+    <Content Include="LinqToDB.Templates\LinqToDB.SqlServer.SqlTypes.Tools.ttinclude" />
+    <Content Include="LinqToDB.Templates\LinqToDB.SQLite.ttinclude" />
+    <Content Include="LinqToDB.Templates\LinqToDB.SQLite.Tools.ttinclude" />
+    <Content Include="LinqToDB.Templates\LinqToDB.SqlCe.ttinclude" />
+    <Content Include="LinqToDB.Templates\LinqToDB.SqlCe.Tools.ttinclude" />
+    <Content Include="LinqToDB.Templates\LinqToDB.SapHana.ttinclude" />
+    <Content Include="LinqToDB.Templates\LinqToDB.SapHana.Tools.ttinclude" />
+    <Content Include="LinqToDB.Templates\LinqToDB.PostgreSQL.ttinclude" />
+    <Content Include="LinqToDB.Templates\LinqToDB.PostgreSQL.Tools.ttinclude" />
+    <Content Include="LinqToDB.Templates\LinqToDB.Oracle.x86.Tools.ttinclude" />
+    <Content Include="LinqToDB.Templates\LinqToDB.Oracle.x64.Tools.ttinclude" />
+    <Content Include="LinqToDB.Templates\LinqToDB.Oracle.ttinclude" />
+    <Content Include="LinqToDB.Templates\LinqToDB.Oracle.Tools.ttinclude" />
+    <Content Include="LinqToDB.Templates\LinqToDB.Oracle.Managed.Tools.ttinclude" />
+    <Content Include="LinqToDB.Templates\LinqToDB.MySql.ttinclude" />
+    <Content Include="LinqToDB.Templates\LinqToDB.MySql.Tools.ttinclude" />
+    <Content Include="LinqToDB.Templates\LinqToDB.Informix.ttinclude" />
+    <Content Include="LinqToDB.Templates\LinqToDB.Informix.Tools.ttinclude" />
+    <Content Include="LinqToDB.Templates\LinqToDB.Firebird.ttinclude" />
+    <Content Include="LinqToDB.Templates\LinqToDB.Firebird.Tools.ttinclude" />
+    <Content Include="LinqToDB.Templates\LinqToDB.DB2.ttinclude" />
+    <Content Include="LinqToDB.Templates\LinqToDB.DB2.Tools.ttinclude" />
+    <Content Include="LinqToDB.Templates\LinqToDB.Access.ttinclude" />
+    <Content Include="LinqToDB.Templates\LinqToDB.Access.Tools.ttinclude" />
+    <Content Include="LinqToDB.Templates\Humanizer.ttinclude" />
+    <Content Include="LinqToDB.Templates\EditableObject.ttinclude" />
+    <Content Include="LinqToDB.Templates\DataModel.ttinclude" />
+    <Content Include="LinqToDB.Templates\DataAnnotations.ttinclude" />
     <None Include="packages.config" />
     <Content Include="Views\Error\AccessNoRight.cshtml" />
     <Content Include="Views\Error\Index.cshtml" />
@@ -384,7 +453,6 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
-    <Content Include="项目锦囊.md" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -445,6 +513,8 @@
       <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\linq2db.t4models.2.6.4\build\linq2db.t4models.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\linq2db.t4models.2.6.4\build\linq2db.t4models.props'))" />
+    <Error Condition="!Exists('..\packages\linq2db.MySql.2.6.4\build\linq2db.MySql.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\linq2db.MySql.2.6.4\build\linq2db.MySql.props'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
