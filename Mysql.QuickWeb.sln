@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.421
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickWeb", "QuickWeb\QuickWeb.csproj", "{CABC82E0-EA20-4EFF-9C85-530662871A8F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quick.Common", "Quick.Common\Quick.Common.csproj", "{BEB46A72-87ED-4E18-95DE-AE64D66DCFDC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quick.Models", "Quick.Models\Quick.Models.csproj", "{24FEFC58-AF70-4653-B02A-63248B7FABAF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quick.Service", "Quick.Service\Quick.Service.csproj", "{A594B876-0073-4DD9-A948-0C901F89F198}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quick.IService", "Quick.IService\Quick.IService.csproj", "{14CDD11F-DA54-4462-B61E-C3318A0204E0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_docs", "_docs", "{8D9026AF-6199-4B4B-8F6E-BDD6FCE138E1}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+		QuickWeb\项目锦囊.md = QuickWeb\项目锦囊.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CABC82E0-EA20-4EFF-9C85-530662871A8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CABC82E0-EA20-4EFF-9C85-530662871A8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CABC82E0-EA20-4EFF-9C85-530662871A8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CABC82E0-EA20-4EFF-9C85-530662871A8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEB46A72-87ED-4E18-95DE-AE64D66DCFDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEB46A72-87ED-4E18-95DE-AE64D66DCFDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEB46A72-87ED-4E18-95DE-AE64D66DCFDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEB46A72-87ED-4E18-95DE-AE64D66DCFDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24FEFC58-AF70-4653-B02A-63248B7FABAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24FEFC58-AF70-4653-B02A-63248B7FABAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24FEFC58-AF70-4653-B02A-63248B7FABAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24FEFC58-AF70-4653-B02A-63248B7FABAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A594B876-0073-4DD9-A948-0C901F89F198}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A594B876-0073-4DD9-A948-0C901F89F198}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A594B876-0073-4DD9-A948-0C901F89F198}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A594B876-0073-4DD9-A948-0C901F89F198}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14CDD11F-DA54-4462-B61E-C3318A0204E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14CDD11F-DA54-4462-B61E-C3318A0204E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14CDD11F-DA54-4462-B61E-C3318A0204E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14CDD11F-DA54-4462-B61E-C3318A0204E0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7B2B1B26-83ED-45EE-B400-B32C59C727CC}
+	EndGlobalSection
+EndGlobal

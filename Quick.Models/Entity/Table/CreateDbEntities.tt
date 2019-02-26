@@ -1,0 +1,48 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Xml" #>
+<#@ assembly name="System.Xml.Linq" #>
+<#@ assembly name="System.Data" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="SqlSugar" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Web" #>
+<#@ assembly name="$(SolutionDir)\packages\sqlSugar.4.9.9.1\lib\SqlSugar.dll" #>
+<#@ output extension="/" #>
+/* =============================================================================
+*
+*                       T4生成多文件时,不生成自己
+*
+* ******************************************************************************
+*																		       *
+*	解决方法：																   *
+* 		output extension="/"  or  output extension="\\"                        *
+*																		       *
+* ******************************************************************************
+*
+* ==============================================================================
+*         CopyRight @ 班纳工作室 2019. All rights reserved
+* ==============================================================================*/
+<# 
+     
+
+    //当前项目目录
+    string projectDir = Host.ResolveAssemblyReference("$(ProjectDir)");
+
+    //解决方案目录
+    string solutionDir = Host.ResolveAssemblyReference("$(SolutionDir)");
+
+	using(var db = new SqlSugarClient(new ConnectionConfig()
+    {
+        ConnectionString = "Data Source=localhost;User ID=root;Password=1010;DataBase=snake;Charset=utf8",
+        DbType = DbType.MySql,
+        InitKeyType = InitKeyType.Attribute,//从特性读取主键和自增列信息
+        IsAutoCloseConnection = true,//开启自动释放模式和EF原理一样我就不多解释了
+    }))
+    {
+        db.DbFirst.CreateClassFile(projectDir+"/Entity/Table","Quick.Models.Entity.Table");      
+    }
+#>

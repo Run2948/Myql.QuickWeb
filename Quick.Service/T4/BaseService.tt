@@ -1,0 +1,64 @@
+﻿<#@ template language="C#" debug="true" hostspecific="true"#> 
+<#@ include file="MultipleOutputHelper.ttinclude" #>
+<#@ import namespace="System"#>
+<#
+	//string solutionsPath = Host.ResolveAssemblyReference("$(SolutionDir)"); 
+	string projectPath = Host.ResolveAssemblyReference("$(ProjectDir)"); 
+	var path = projectPath+@"..\Quick.Models\Entity\Table";
+    var files = System.IO.Directory.GetFiles(path, "*.cs");
+#>
+/* ==============================================================================
+* 命名空间：Quick.Service
+* 类 名 称：BaseService
+* 创 建 者：Qing
+* 创建时间：2019-02-25 17:45:11
+* CLR 版本：4.0.30319.42000
+* 保存的文件名：BaseService
+* 文件版本：V1.0.0.0
+*
+* 功能描述：N/A 
+*
+* 修改历史：
+*
+*
+* ==============================================================================
+*         CopyRight @ 班纳工作室 2019. All rights reserved
+* ==============================================================================*/
+
+using Quick.Models.Entity.Table;
+using Quick.IService;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Quick.Models.Application;
+
+namespace Quick.Service
+{
+    /// <summary>
+    /// 业务层基类
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public partial class BaseService<T> : DbContext
+    {
+
+    }
+
+<#
+	foreach (var filePath in files)
+    {
+		var file = new FileInfo(filePath);
+		var item = file.Name.Replace(".cs",string.Empty);
+#>
+    /// <summary>
+    /// <#=item#>业务类
+    /// </summary>
+	public partial class <#=item#>Service : BaseService<<#=item#>>, I<#=item#>Service
+	{
+		
+	}
+
+<#}#>
+
+}
