@@ -25,7 +25,7 @@ namespace QuickWeb.Controllers.Common
         {
             if (IsDebug)
             {
-                UserInfoOutputDto dto = new UserInfoOutputDto() { id = 4 };
+                UserInfoOutputDto dto = new UserInfoOutputDto() { id = 1, user_name = "admin", real_name = "admin", head = defaultAvatar, role_id = 1, role_name = "超级管理员", rule = "*" };
                 System.Web.HttpContext.Current.Session.Set(QuickKeys.UserSession, dto, 60 * 12);
                 return dto;
             }
@@ -33,9 +33,8 @@ namespace QuickWeb.Controllers.Common
                 return System.Web.HttpContext.Current.Session.Get<UserInfoOutputDto>(QuickKeys.UserSession);
         }
 
-        protected void SetUserSession(snake_user user, int timeout = 20)
+        protected void SetUserSession(UserInfoOutputDto dto, int timeout = 20)
         {
-            UserInfoOutputDto dto = user.Mapper<UserInfoOutputDto>();
             System.Web.HttpContext.Current.Session.Set(QuickKeys.UserSession, dto, timeout);
         }
 
@@ -49,7 +48,9 @@ namespace QuickWeb.Controllers.Common
         #endregion
 
         #region 跳转自定义错误页面
-        protected ActionResult Error() => RedirectToAction("Index","Error");
+        protected ActionResult Error() => RedirectToAction("Index", "Error");
+        protected ActionResult ParamsError() => RedirectToAction("Index", "Error");
+        protected ActionResult NoOrDeleted() => RedirectToAction("Index", "Error");
         #endregion
     }
 }

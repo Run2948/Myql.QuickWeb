@@ -1,16 +1,16 @@
 ﻿using Masuit.Tools.Logging;
 using Quick.Common.Extension;
-using Quick.Models.Entity.Table;
 using QuickWeb.Controllers.Common;
 using QuickWeb.Models.RequestModel;
 using System;
 using System.Web.Mvc;
+using Quick.IService;
 
 namespace QuickWeb.Controllers
 {
     public class UserLoginController : UserBaseController
     {
-        //public IUserInfoService UserInfoService { get; set; }
+        public Isnake_userService snake_userService { get;set; }	
 
         // GET: UserLogin
         [HttpGet]
@@ -30,7 +30,7 @@ namespace QuickWeb.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var userInfo = new snake_user();//UserInfoService.GetFirstEntity(l => l.Username == request.Username && l.Password == request.Password);
+                    var userInfo = snake_userService.Login(request.Username,request.Password);
                     if (userInfo != null)
                     {
                         SetUserSession(userInfo, 60 * 12);// 12个小时

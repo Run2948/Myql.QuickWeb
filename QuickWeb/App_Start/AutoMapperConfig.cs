@@ -20,6 +20,7 @@
 using AutoMapper;
 using Quick.Models.Dto;
 using Quick.Models.Entity.Table;
+using QuickWeb.Areas.Admin.Models.ViewModel;
 
 namespace QuickWeb
 {
@@ -29,12 +30,8 @@ namespace QuickWeb
         {
             Mapper.Initialize(m =>
             {
-                //m.CreateMap<UserInfo, UserInfoInputDto>();
-                //m.CreateMap<UserInfoInputDto, UserInfo>();
-                m.CreateMap<snake_user, UserInfoOutputDto>();
-                m.CreateMap<UserInfoOutputDto, snake_user>();
-                //m.CreateMap<UserInfoInputDto, UserInfoOutputDto>();
-                //m.CreateMap<UserInfoOutputDto, UserInfoInputDto>();
+                //m.CreateMap<UserInfoView, UserInfoOutputDto>();
+                m.CreateMap<UserInfoOutputDto, UserInfoView>().ForMember(dest => dest.rule, opt => opt.Ignore());
             });
         }
     }

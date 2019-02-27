@@ -1076,5 +1076,14 @@ namespace QuickWeb.Controllers.Common
             return "";
         }
         #endregion
+
+        #region 通用Id非法校验
+        protected bool IsIllegalId(int ? id)
+        {
+            if(id == null || id <= 0)
+                return true;
+            return false;
+        }
+        #endregion
     }
 }

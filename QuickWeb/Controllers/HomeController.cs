@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Quick.Common.NoSQL;
 using Quick.IService;
@@ -9,7 +6,7 @@ using QuickWeb.Controllers.Common;
 
 namespace QuickWeb.Controllers
 {
-    public class HomeController : BaseController
+    public class HomeController : UserBaseController
     {
         public Isnake_roleService snake_roleService { get;set; }	
 
@@ -21,7 +18,8 @@ namespace QuickWeb.Controllers
             // 测试Redis操作
             //TestRedisOpt();
             // 测试查询snake_role表单
-            return Ok(snake_roleService.GetAll().ToList());
+            //return Ok(snake_roleService.GetAll().ToList());
+            return View();
         }
 
         #region 测试方法

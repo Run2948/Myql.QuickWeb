@@ -103,6 +103,17 @@ namespace Quick.Common.Security
             return tmpMd5.ToMD5();
         }
 
+        /// <summary>
+        /// 根据盐值MD5加密
+        /// </summary>
+        /// <param name="password"></param>
+        /// <param name="salt"></param>
+        /// <returns></returns>
+        public static string ToSaltMD5(this string password, string salt)
+        {
+            string tmpMd5 = (password + salt).ToMD5();
+            return (salt + tmpMd5).ToMD5().ToLower();
+        }
         #endregion
     }
 }

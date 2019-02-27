@@ -44,7 +44,7 @@ namespace Quick.Models.Application
                 {
                     ConnectionString = SqlConnStr,
                     DbType = DbType.MySql,
-                    InitKeyType = InitKeyType.Attribute,//从特性读取主键和自增列信息
+                    InitKeyType = InitKeyType.SystemTable,//InitKeyType.Attribute:从特性读取主键和自增列信息/InitKeyType.SystemTable:从数据库主键的方式获取主键信息
                     IsAutoCloseConnection = true,//开启自动释放模式和EF原理一样我就不多解释了
                     ConfigureExternalServices = new ConfigureExternalServices()
                     {
@@ -52,6 +52,11 @@ namespace Quick.Models.Application
                         //new HttpRuntimeCache()  //HttpRuntimeCache是继承ICacheService自已实现的一个类
                         DataInfoCacheService = new HttpRuntimeCache() 
                         //DataInfoCacheService = new RedisCache(RedisConnStr)
+                    },
+                    MoreSettings = new ConnMoreSettings()
+                    {
+                        //IsWithNoLockQuery = true,
+                        IsAutoRemoveDataCache = true,
                     }
                 });
             }

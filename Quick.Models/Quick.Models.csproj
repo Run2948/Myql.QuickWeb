@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MySql.Data, Version=6.2.1.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>lib\MySql.Data.dll</HintPath>
+    </Reference>
     <Reference Include="SqlSugar, Version=4.9.9.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\sqlSugar.4.9.9.1\lib\SqlSugar.dll</HintPath>
     </Reference>
@@ -38,9 +42,16 @@
       <HintPath>..\packages\SyntacticSugar.2.4.1\lib\net40\SyntacticSugar.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Numerics" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\BsTableInfo.cs" />
     <Compile Include="Common\PageRequest.cs" />
     <Compile Include="Common\ResultInfo.cs" />
     <Compile Include="Common\SessionKey.cs" />
@@ -72,8 +84,14 @@
   <ItemGroup>
     <Content Include="Entity\Table\CreateDbEntities.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>CreateDbEntities./</LastGenOutput>
+      <LastGenOutput>CreateDbEntities.txt</LastGenOutput>
     </Content>
+    <Content Include="Entity\Table\CreateDbEntities.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CreateDbEntities.tt</DependentUpon>
+    </Content>
+    <Content Include="lib\MySql.Data.dll" />
     <Content Include="T4\DbContext.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DbContext.cs</LastGenOutput>

@@ -18,7 +18,7 @@ namespace QuickWeb
             // Autofac 依赖注入
             AutofacConfig.Register();
             // Hangfire 系统任务配置
-            HangfireConfig.Register();
+            //HangfireConfig.Register();
             System.Web.Http.GlobalConfiguration.Configuration.Formatters.XmlFormatter.SupportedMediaTypes.Clear();
         }
     }

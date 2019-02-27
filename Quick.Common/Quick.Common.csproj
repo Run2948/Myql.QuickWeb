@@ -96,6 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assemblies.cs" />
+    <Compile Include="JsonConfig.cs" />
     <Compile Include="Images\ImageUtils.cs" />
     <Compile Include="CommonHelper.cs" />
     <Compile Include="DocumentConvert.cs" />

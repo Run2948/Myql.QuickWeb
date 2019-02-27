@@ -51,16 +51,16 @@ namespace Quick.Models.Entity.Table
            /// <summary>
            /// Desc:最后登录IP
            /// Default:
-           /// Nullable:False
+           /// Nullable:True
            /// </summary>           
            public string last_login_ip {get;set;}
 
            /// <summary>
            /// Desc:最后登录时间
-           /// Default:0
-           /// Nullable:False
+           /// Default:
+           /// Nullable:True
            /// </summary>           
-           public int last_login_time {get;set;}
+           public DateTime? last_login_time {get;set;}
 
            /// <summary>
            /// Desc:真实姓名

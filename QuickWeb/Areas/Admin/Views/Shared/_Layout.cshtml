@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <title>@ViewBag.Title - Snake后台管理系统</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <!--[if lt IE 9]>
+        <meta http-equiv="refresh" content="0;ie.html"/>
+    <![endif]-->
+
+    <link rel="shortcut icon" href="~/favicon.ico">
+    <link href="~/Content/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="~/Content/admin/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="~/Content/admin/css/animate.min.css" rel="stylesheet">
+    <link href="~/Content/admin/css/style.min.css?v=4.1.0" rel="stylesheet">
+
+    @RenderSection("styles", false)
+</head>
+<body class="gray-bg">
+
+    <div class="wrapper wrapper-content @(ViewBag.GlobalStyle ?? "animated fadeInRight")">
+        @RenderBody()
+    </div>
+
+    <script src="~/Content/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="~/Content/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="~/Content/admin/js/content.min.js?v=1.0.0"></script>
+    @RenderSection("scripts", false)
+</body>
+</html>
