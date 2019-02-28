@@ -74,7 +74,10 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="col-sm-4 col-sm-offset-6">
+                        <div class="col-sm-1 col-sm-offset-5">
+                            <a class="btn btn-default" href="@Url.Action("Index")">取消</a>
+                        </div>
+                        <div class="col-sm-1">
                             @Html.AntiForgeryToken()
                             <button class="btn btn-primary" type="submit">提交</button>
                         </div>
@@ -101,12 +104,15 @@
         function showSuccess(res) {
             layer.ready(function () {
                 layer.close(index);
-                if (0 == res.code) {
-                    layer.alert(res.msg, { title: '友情提示', icon: 1, closeBtn: 0 });
-                } else if (1 == res.status) {
-                    window.location.reload();
+                if (1 == res.status) {
+                    layer.alert("数据添加成功！", { title: '友情提示', icon: 1, closeBtn: 0 }, function (self) {
+                        layer.close(self);
+                        window.location.href = '@Url.Action("Index")';
+                    });
+                } else if (0 == res.status) {
+                    layer.alert(res.msg, { title: '友情提示', icon: 2 });
                 } else {
-                    layer.msg(res.msg, { anim: 6 });
+                    window.location.reload();
                 }
             });
         }

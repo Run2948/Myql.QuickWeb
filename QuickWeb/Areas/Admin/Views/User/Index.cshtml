@@ -131,7 +131,7 @@
                     field: "status",
                     formatter: function (value, row, index) {
                         if(value == 1) return "正常";
-                            return "禁用";
+                        return "禁用";
                     }
                 }, {
                     field: "operate",
@@ -154,21 +154,21 @@
     });
 
     function userDel(id){
-        layer.confirm('确认删除此管理员?', {icon: 3, title:'提示'}, function(index){
+        var index = layer.confirm('确认删除此管理员?', {icon: 3, title:'提示'}, function(){
             //do something
-            $.getJSON("@Url.Action("UserDel")", {'id' : id}, function(res){
-                if(0 == res.status){
-                    layer.alert(res.msg, {title: '友情提示', icon: 1, closeBtn: 0}, function(){
+            $.post("@Url.Action("UserDel","User")", {'id' : id}, function(res){
+                layer.close(index);
+                if(1 == res.status){
+                    layer.alert("数据删除成功！", { title: '友情提示', icon: 1, closeBtn: 0 }, function (self){
+                        layer.close(self);
                         initTable();
                     });
-                }else if(1 == res.code){
-                    window.location.reload();
+                }else if(0 == res.status){
+                    layer.alert(res.msg, { title: '友情提示', icon: 2 });
                 }else{
-                    layer.alert(res.msg, {title: '友情提示', icon: 2});
+                    window.location.reload();
                 }
             });
-
-            layer.close(index);
         });
     }
     </script>

@@ -76,12 +76,57 @@ namespace QuickWeb.Controllers
         }
 
         /// <summary>
-        /// 自定义错误页面
+        /// 自定义错误页面1
         /// </summary>
         /// <returns></returns>
         public ActionResult Index()
         {
-            return View();
+            if (Request.HttpMethod.ToLower().Equals("get"))
+            {
+                return View();
+            }
+            return Json(new
+            {
+                status = 0,
+                msg = "Error",
+                data = "系统异常"
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// 自定义错误页面2
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult ParamsError()
+        {
+            if (Request.HttpMethod.ToLower().Equals("get"))
+            {
+                return View("~/Views/Error/Index.cshtml");
+            }
+            return Json(new
+            {
+                status = 0,
+                msg = "ParamsError",
+                data = "请求参数异常"
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// 自定义错误页面2
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult NoOrDeleted()
+        {
+            if (Request.HttpMethod.ToLower().Equals("get"))
+            {
+                return View("~/Views/Error/Index.cshtml");
+            }
+            return Json(new
+            {
+                status = 0,
+                msg = "NoOrDeleted",
+                data = "请求的数据不存在或已经被删除"
+            }, JsonRequestBehavior.AllowGet);
         }
     }
 }

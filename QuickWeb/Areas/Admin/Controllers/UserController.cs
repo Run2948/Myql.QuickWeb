@@ -105,7 +105,21 @@ namespace QuickWeb.Areas.Admin.Controllers
         #endregion
 
         #region 删除管理员
+        public ActionResult UserDel(int ? id)
+        {
+            if (IsIllegalId(id)) return ParamsError();
+            try
+            {
+                snake_userService.DeleteById(id);
+            }
+            catch (Exception e)
+            {
+                LogManager.Error(GetType(), e);
+                return No(e.Message);
+            }
 
+            return Ok();
+        }
         #endregion
 
         #region 页面基础数据传递
