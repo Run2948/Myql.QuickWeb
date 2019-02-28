@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MySql.Data, Version=6.2.1.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>lib\MySql.Data.dll</HintPath>
+    </Reference>
     <Reference Include="SqlSugar, Version=4.9.9.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\sqlSugar.4.9.9.1\lib\SqlSugar.dll</HintPath>
     </Reference>
@@ -72,7 +76,12 @@
   <ItemGroup>
     <Content Include="Entity\Table\CreateDbEntities.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>CreateDbEntities./</LastGenOutput>
+      <LastGenOutput>CreateDbEntities.txt</LastGenOutput>
+    </Content>
+    <Content Include="Entity\Table\CreateDbEntities.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CreateDbEntities.tt</DependentUpon>
     </Content>
     <Content Include="T4\DbContext.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

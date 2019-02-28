@@ -11,7 +11,7 @@
  Target Server Version : 50724
  File Encoding         : 65001
 
- Date: 26/02/2019 18:37:58
+ Date: 28/02/2019 10:26:08
 */
 
 SET NAMES utf8mb4;
@@ -111,17 +111,18 @@ CREATE TABLE `snake_user`  (
   `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '密码',
   `head` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT '' COMMENT '头像',
   `login_times` int(11) NOT NULL DEFAULT 0 COMMENT '登陆次数',
-  `last_login_ip` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '最后登录IP',
-  `last_login_time` int(11) NOT NULL DEFAULT 0 COMMENT '最后登录时间',
+  `last_login_ip` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT '' COMMENT '最后登录IP',
+  `last_login_time` datetime(0) NULL DEFAULT NULL COMMENT '最后登录时间',
   `real_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '真实姓名',
   `status` int(1) NOT NULL DEFAULT 0 COMMENT '状态',
   `role_id` int(11) NOT NULL DEFAULT 1 COMMENT '用户角色id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of snake_user
 -- ----------------------------
-INSERT INTO `snake_user` VALUES (1, 'admin', 'a9ddd2e7bdff202e3e9bca32765e9ba0', '/static/admin/images/profile_small.jpg', 41, '127.0.0.1', 1505559479, 'admin', 1, 1);
+INSERT INTO `snake_user` VALUES (1, 'admin', 'a9ddd2e7bdff202e3e9bca32765e9ba0', '/Content/admin/images/profile_small.jpg', 42, NULL, NULL, 'admin', 1, 1);
+INSERT INTO `snake_user` VALUES (2, 'test', 'b08b74e74f2a88e351c7e85f9774cf09', '/Content/admin/images/profile_small.jpg', 0, NULL, NULL, '测试', 2, 2);
 
 SET FOREIGN_KEY_CHECKS = 1;
