@@ -17,9 +17,10 @@
         </div>
         <div class="ibox-content">
             <div class="form-group clearfix col-sm-1">
-                @*{if authCheck('articles/articleadd')}*@
-                <a href="@Url.Action("ArticleAdd")" class="btn btn-outline btn-primary"> 添加文章</a>
-                @*{/if}*@
+                @if (Auth.Check("article/articleadd"))
+                {
+                    <a href="@Url.Action("ArticleAdd")" class="btn btn-outline btn-primary"> 添加文章</a>
+                }
             </div>
             <!--搜索框开始-->
             <form id='commentForm' role="form" method="post" class="form-inline pull-right">
@@ -116,8 +117,12 @@
                     }, {
                         field: "operate",
                         formatter: function (value, row, index) {
-                            return '<a href="@(Url.Action("ArticleEdit"))/'+ row.id +'" class="btn btn-primary btn-sm"><i class="fa fa-paste"></i> 编辑</a> '+
-                                ' <a href="javascript:articleDel('+ row.id +')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> 删除</a> ';
+                            var btn = '';
+                            if ('True' == '@Auth.Check("article/articleedit")')
+                                btn += '<a href="@(Url.Action("ArticleEdit"))/' + row.id + '" class="btn btn-primary btn-sm"><i class="fa fa-paste"></i> 编辑</a> ';
+                            if ('True' == '@Auth.Check("article/articledel")')
+                                btn += ' <a href="javascript:articleDel('+ row.id +')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> 删除</a> ';
+                            return btn;
                         }
                     }]
             });

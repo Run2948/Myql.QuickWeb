@@ -9,12 +9,12 @@ namespace QuickWeb.Models.RequestModel
     public class LoginRequest
     {
         [Required(ErrorMessage = "用户名不能为空！")]
-        public string Username { get; set; }
+        public string user_name { get; set; }
 
         [Required(ErrorMessage = "登陆密码不能为空！")]
-        public string Password { get; set; }
+        public string password { get; set; }
 
         [Required(ErrorMessage = "非法请求！校验码不能为空！")]
-        public string VerifyCode { get; set; }
+        public string code { get; set; }
     }
 }

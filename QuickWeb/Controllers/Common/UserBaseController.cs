@@ -25,7 +25,7 @@ namespace QuickWeb.Controllers.Common
         {
             if (IsDebug)
             {
-                UserInfoOutputDto dto = new UserInfoOutputDto() { id = 1, user_name = "admin", real_name = "admin", head = defaultAvatar, role_id = 1, role_name = "超级管理员", rule = "*" };
+                UserInfoOutputDto dto = new UserInfoOutputDto() { id = 1, user_name = "admin", real_name = "admin", head = defaultAvatar, role_id = 1, role_name = "超级管理员", rule = "*",rights = new List<string> { "*"} };
                 System.Web.HttpContext.Current.Session.Set(QuickKeys.UserSession, dto, 60 * 12);
                 return dto;
             }

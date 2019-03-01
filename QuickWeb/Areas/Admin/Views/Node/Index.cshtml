@@ -16,9 +16,10 @@
         </div>
         <div class="ibox-content">
             <div class="form-group">
-                @*{if authCheck('node/nodeadd')}*@
-                <button class="btn btn-outline btn-primary" type="button" id="addNode">添加顶级节点</button>
-                @*{/if}*@
+                @if(Auth.Check("node/nodeadd"))
+                {
+                    <button class="btn btn-outline btn-primary" type="button" id="addNode">添加顶级节点</button>
+                }
                 <button class="btn btn-outline btn-success" type="button" onclick="window.location.reload();">刷新树</button>
             </div>
 
@@ -147,24 +148,27 @@
 <div class="ibox-content" id="ask_box" style="display: none">
     <div class="form-horizontal m-t">
         <div class="form-group" style="text-align: center">
-            @*{if authCheck('node/nodeadd')}*@
-            <button class="btn btn-outline btn-success" type="button" id="addsubNode">
-                <i class="fa fa-plus"></i>
-                添加子节点
-            </button>
-            @*{/if}*@
-            @*{if authCheck('node/nodeedit')}*@
-            <button class="btn btn-outline btn-primary" type="button" id="editNode">
-                <i class="fa fa-edit"></i>
-                编辑节点
-            </button>
-            @*{/if}*@
-            @*{if authCheck('node/nodedel')}*@
-            <button class="btn btn-outline btn-danger" type="button" id="delNode">
-                <i class="fa fa-trash-o"></i>
-                删除节点
-            </button>
-            @*{/if}*@
+            @if (Auth.Check("node/nodeadd"))
+            {
+                <button class="btn btn-outline btn-success" type="button" id="addsubNode">
+                    <i class="fa fa-plus"></i>
+                    添加子节点
+                </button>
+            }
+            @if (Auth.Check("node/nodeedit"))
+            {
+                <button class="btn btn-outline btn-primary" type="button" id="editNode">
+                    <i class="fa fa-edit"></i>
+                    编辑节点
+                </button>
+            }
+            @if (Auth.Check("node/nodedel"))
+            {
+                <button class="btn btn-outline btn-danger" type="button" id="delNode">
+                    <i class="fa fa-trash-o"></i>
+                    删除节点
+                </button>
+            }
         </div>
     </div>
 </div>

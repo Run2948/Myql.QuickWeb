@@ -44,14 +44,18 @@
                                 </span>
                             </a>
                             <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                                @*{if authCheck('profile/headedit')}*@
-                                <li>
-                                    <a class="J_menuItem" href="@Url.Action("Index","Profile",new { area = "Admin"})">修改信息</a>
-                                </li>
-                                @*{/if}*@
-                                <li>
-                                    <a class="J_menuItem" href="@Url.Action("PwdEdit","Profile",new { area = "Admin"})">修改密码</a>
-                                </li>
+                                @if(Auth.Check("profile/index"))
+                                {
+                                    <li>
+                                        <a class="J_menuItem" href="@Url.Action("Index","Profile",new { area = "Admin"})">修改信息</a>
+                                    </li>
+                                }
+                                @if(Auth.Check("profile/pwdedit"))
+                                {
+                                    <li>
+                                        <a class="J_menuItem" href="@Url.Action("PwdEdit","Profile",new { area = "Admin"})">修改密码</a>
+                                    </li>
+                                }
                                 <li>
                                     <a class="J_menuItem" href="@Url.Action("Index","UserLogout",new { area = ""})">安全退出</a>
                                 </li>

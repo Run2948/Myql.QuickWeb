@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Quick.Models.Dto
 {
@@ -76,5 +77,10 @@ namespace Quick.Models.Dto
         /// Nullable:True
         /// </summary>           
         public string rule { get; set; }
+
+        /// <summary>
+        /// Desc:用户所有权限集合
+        /// </summary>
+        public List<string> rights { get; set; }
     }
 }

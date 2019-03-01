@@ -17,9 +17,10 @@
         </div>
         <div class="ibox-content">
             <div class="form-group clearfix col-sm-1">
-                @*{if authCheck('role/roleadd')}*@
-                <a href="@Url.Action("RoleAdd")" class="btn btn-outline btn-primary">添加角色</a>
-                @*{/if}*@
+                @if(Auth.Check("role/roleadd"))
+                {
+                    <a href="@Url.Action("RoleAdd")" class="btn btn-outline btn-primary">添加角色</a>
+                }
             </div>
             <!--搜索框开始-->
             <form id='commentForm' role="form" method="post" class="form-inline pull-right">
@@ -128,9 +129,14 @@
                         formatter: function (value, row, index) {
                             if(row.id == 1)
                                 return "-";
-                            return '<a href="@(Url.Action("RoleEdit"))/'+ row.id +'" class="btn btn-primary btn-sm"><i class="fa fa-paste"></i> 编辑</a> '+
-                                ' <a href="javascript:roleDel('+ row.id +')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> 删除</a> ' +
-                                ' <a href="javascript:giveQx(' + row.id +')" class="btn btn-info btn-sm"><i class="fa fa-institution"></i> 分配权限</a>';
+                            var btn = '';
+                            if ('True' == '@Auth.Check("role/roleedit")')
+                                btn += '<a href="@(Url.Action("RoleEdit"))/'+ row.id +'" class="btn btn-primary btn-sm"><i class="fa fa-paste"></i> 编辑</a> ';
+                            if ('True' == '@Auth.Check("role/roledel")')
+                                btn += ' <a href="javascript:roleDel(' + row.id + ')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> 删除</a> ';
+                            if ('True' == '@Auth.Check("role/giveaccess")')
+                                btn += ' <a href="javascript:giveQx(' + row.id + ')" class="btn btn-info btn-sm"><i class="fa fa-institution"></i> 分配权限</a>';
+                            return btn;                             
                         }
                     }]
             });

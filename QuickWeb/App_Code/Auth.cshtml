@@ -1,0 +1,33 @@
+﻿@using Quick.Common
+@using Quick.Common.Net
+@using Quick.Models.Dto
+
+@helper ShowUnit(int price)
+{
+    if (price == 0)
+    {
+        @:免费
+    }
+    else
+    {
+        @price
+    }
+}
+
+// 请注意，functions 对应的是Razor的代码段，需要添加{},并且functions内部是正规的C#方法
+@functions{
+
+    public static IHtmlString Get(int count)
+    {
+        string result = count == 0 ? "不存在" : "存在";
+        return new HtmlString(result);
+    }
+
+    public static bool Check(string url)
+    {
+        var dto = HttpContext.Current.Session.Get<UserInfoOutputDto>(QuickKeys.UserSession);
+        if(dto?.rights == null) return false;
+        if(dto.rights.Contains("*")) return true;
+        return dto.rights.Any() && dto.rights.Contains(url.ToLower());
+    }
+}

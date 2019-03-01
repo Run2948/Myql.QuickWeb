@@ -1151,6 +1151,7 @@
     <Content Include="Areas\Admin\Views\Data\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Profile\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Profile\PwdEdit.cshtml" />
+    <Content Include="App_Code\Auth.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Error\AccessNoRight.cshtml" />
     <Content Include="Views\Error\Index.cshtml" />
@@ -1158,6 +1159,7 @@
     <Content Include="Views\Error\ServerError.cshtml" />
     <Content Include="Views\Error\ServiceUnavailable.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\UserLogin\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

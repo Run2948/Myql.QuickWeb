@@ -16,9 +16,10 @@
         </div>
         <div class="ibox-content">
             <div class="form-group clearfix col-sm-1">
-                @*{if authCheck('user/useradd') }*@
-                <a href="@Url.Action("UserAdd")"  class="btn btn-outline btn-primary">添加管理员</a>
-                @*{/if}*@
+                @if (Auth.Check("user/useradd"))
+                {
+                    <a href="@Url.Action("UserAdd")" class="btn btn-outline btn-primary">添加管理员</a>
+                }
             </div>
             <!--搜索框开始-->
             <form id='commentForm' role="form" method="post" class="form-inline pull-right">
@@ -136,8 +137,12 @@
                     formatter: function (value, row, index) {
                         if(row.id == 1)
                             return "-";
-                        return '<a href="@(Url.Action("UserEdit"))/'+ row.id +'" class="btn btn-primary btn-sm"><i class="fa fa-paste"></i> 编辑</a> '+
-                            ' <a href="javascript:userDel('+ row.id +')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> 删除</a>';
+                        var btn = '';
+                        if ('True' == '@Auth.Check("user/useredit")')
+                            btn += '<a href="@(Url.Action("UserEdit"))/'+ row.id +'" class="btn btn-primary btn-sm"><i class="fa fa-paste"></i> 编辑</a> ';
+                        if ('True' == '@Auth.Check("user/userdel")')
+                            btn += ' <a href="javascript:userDel(' + row.id + ')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> 删除</a> ';
+                        return btn;  
                     }
                 }]
         });

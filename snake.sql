@@ -11,17 +11,17 @@
  Target Server Version : 50724
  File Encoding         : 65001
 
- Date: 28/02/2019 10:26:08
+ Date: 01/03/2019 16:32:51
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
--- Table structure for snake_articles
+-- Table structure for snake_article
 -- ----------------------------
-DROP TABLE IF EXISTS `snake_articles`;
-CREATE TABLE `snake_articles`  (
+DROP TABLE IF EXISTS `snake_article`;
+CREATE TABLE `snake_article`  (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '文章id',
   `title` varchar(155) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '文章标题',
   `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '文章描述',
@@ -30,12 +30,12 @@ CREATE TABLE `snake_articles`  (
   `content` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '文章内容',
   `add_time` datetime(0) NOT NULL COMMENT '发布时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of snake_articles
+-- Records of snake_article
 -- ----------------------------
-INSERT INTO `snake_articles` VALUES (2, '文章标题', '文章描述', '关键字1,关键字2,关键字3', '/upload/20170916/1e915c70dbb9d3e8a07bede7b64e4cff.png', '<p><img src=\"/upload/image/20170916/1505555254.png\" title=\"1505555254.png\" alt=\"QQ截图20170916174651.png\"/></p><p>测试文章内容</p><p>测试内容</p>', '2017-09-16 17:47:44');
+INSERT INTO `snake_article` VALUES (1, '文章标题', '文章描述', '关键字1,关键字2,关键字3', '/upload/20170916/1e915c70dbb9d3e8a07bede7b64e4cff.png', '<p><img src=\"/upload/image/20170916/1505555254.png\" title=\"1505555254.png\" alt=\"QQ截图20170916174651.png\"/></p><p>测试文章内容</p><p>测试内容</p>', '2017-09-16 17:47:44');
 
 -- ----------------------------
 -- Table structure for snake_node
@@ -50,7 +50,7 @@ CREATE TABLE `snake_node`  (
   `type_id` int(11) NOT NULL COMMENT '父级节点id',
   `style` varchar(155) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '菜单样式',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 30 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of snake_node
@@ -73,16 +73,15 @@ INSERT INTO `snake_node` VALUES (15, '节点管理', 'node', 'index', 2, 1, '');
 INSERT INTO `snake_node` VALUES (16, '添加节点', 'node', 'nodeadd', 1, 15, '');
 INSERT INTO `snake_node` VALUES (17, '编辑节点', 'node', 'nodeedit', 1, 15, '');
 INSERT INTO `snake_node` VALUES (18, '删除节点', 'node', 'nodedel', 1, 15, '');
-INSERT INTO `snake_node` VALUES (19, '文章管理', 'articles', 'index', 2, 0, 'fa fa-book');
-INSERT INTO `snake_node` VALUES (20, '文章列表', 'articles', 'index', 2, 19, '');
-INSERT INTO `snake_node` VALUES (21, '添加文章', 'articles', 'articleadd', 1, 19, '');
-INSERT INTO `snake_node` VALUES (22, '编辑文章', 'articles', 'articleedit', 1, 19, '');
-INSERT INTO `snake_node` VALUES (23, '删除文章', 'articles', 'articledel', 1, 19, '');
-INSERT INTO `snake_node` VALUES (24, '上传图片', 'articles', 'uploadImg', 1, 19, '');
+INSERT INTO `snake_node` VALUES (19, '文章管理', 'article', 'index', 2, 0, 'fa fa-book');
+INSERT INTO `snake_node` VALUES (20, '文章列表', 'article', 'index', 2, 19, '');
+INSERT INTO `snake_node` VALUES (21, '添加文章', 'article', 'articleadd', 1, 19, '');
+INSERT INTO `snake_node` VALUES (22, '编辑文章', 'article', 'articleedit', 1, 19, '');
+INSERT INTO `snake_node` VALUES (23, '删除文章', 'article', 'articledel', 1, 19, '');
+INSERT INTO `snake_node` VALUES (24, '上传图片', 'article', 'uploadImg', 1, 19, '');
 INSERT INTO `snake_node` VALUES (25, '个人中心', '#', '#', 1, 0, '');
-INSERT INTO `snake_node` VALUES (26, '编辑信息', 'profile', 'index', 1, 25, '');
-INSERT INTO `snake_node` VALUES (27, '编辑头像', 'profile', 'headedit', 1, 25, '');
-INSERT INTO `snake_node` VALUES (28, '上传头像', 'profile', 'uploadheade', 1, 25, '');
+INSERT INTO `snake_node` VALUES (26, '修改信息', 'profile', 'index', 1, 25, NULL);
+INSERT INTO `snake_node` VALUES (27, '修改密码', 'profile', 'pwdedit', 1, 25, NULL);
 
 -- ----------------------------
 -- Table structure for snake_role
@@ -93,7 +92,7 @@ CREATE TABLE `snake_role`  (
   `role_name` varchar(155) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '角色名称',
   `rule` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '权限节点数据',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of snake_role
@@ -122,7 +121,6 @@ CREATE TABLE `snake_user`  (
 -- ----------------------------
 -- Records of snake_user
 -- ----------------------------
-INSERT INTO `snake_user` VALUES (1, 'admin', 'a9ddd2e7bdff202e3e9bca32765e9ba0', '/Content/admin/images/profile_small.jpg', 42, NULL, NULL, 'admin', 1, 1);
-INSERT INTO `snake_user` VALUES (2, 'test', 'b08b74e74f2a88e351c7e85f9774cf09', '/Content/admin/images/profile_small.jpg', 0, NULL, NULL, '测试', 2, 2);
+INSERT INTO `snake_user` VALUES (1, 'admin', 'b621c5577f6de890faf78dc9797e7187', 'admin', 42, NULL, NULL, 'admin', 1, 1);
 
 SET FOREIGN_KEY_CHECKS = 1;

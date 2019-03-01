@@ -35,8 +35,14 @@
                                     <td>@(t.counts)</td>
                                     <td>@(t.back_time)</td>
                                     <td>
-                                        <a href="javascript:backData('@(t.table_name)')" class="btn btn-primary btn-sm"><i class="fa fa-tasks"></i> 备份</a>
-                                        <a href="javascript:importData('@(t.table_name)')" class="btn btn-info btn-sm"><i class="fa fa-retweet"></i> 还原</a>
+                                        @if (Auth.Check("data/backdata"))
+                                        {
+                                            <a href="javascript:backData('@(t.table_name)')" class="btn btn-primary btn-sm"><i class="fa fa-tasks"></i> 备份</a>
+                                        }
+                                        @if (Auth.Check("data/importdata"))
+                                        {
+                                            <a href="javascript:importData('@(t.table_name)')" class="btn btn-info btn-sm"><i class="fa fa-retweet"></i> 还原</a>
+                                        }
                                     </td>
                                 </tr>
                             }
