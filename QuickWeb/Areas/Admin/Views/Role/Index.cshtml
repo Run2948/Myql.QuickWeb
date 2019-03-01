@@ -176,7 +176,7 @@
             //加载层
             var loading = layer.load(0, { shade: false }); //0代表加载的风格，支持0-2
             // 获取权限信息
-            $.getJSON("@Url.Action("GetAccess")", { 'id': id }, function (res) {
+            $.getJSON("@Url.Action("GiveAccess")", { 'id': id }, function (res) {
                 layer.close(loading);
                 if (1 == res.status) {
                     zNodes = res.data;  //将字符串转换成obj

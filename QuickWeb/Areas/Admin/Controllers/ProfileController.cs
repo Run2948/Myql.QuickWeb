@@ -10,6 +10,7 @@ using Quick.Common.Security;
 using Quick.IService;
 using QuickWeb.Areas.Admin.Models.RequestModel;
 using QuickWeb.Controllers.Common;
+using QuickWeb.Filters;
 
 namespace QuickWeb.Areas.Admin.Controllers
 {
@@ -91,6 +92,7 @@ namespace QuickWeb.Areas.Admin.Controllers
         /// 上传图像
         /// </summary>
         /// <returns></returns>
+        [CustomAllowed]
         public ActionResult UploadHead()
         {
             var result = PreFileUpload("img", "images/avatars");
@@ -123,6 +125,7 @@ namespace QuickWeb.Areas.Admin.Controllers
         /// <param name="cropH">裁剪区域高度 340</param>
         /// <param name="rotation">旋转角度：0-360°</param>
         /// <returns></returns>
+        [CustomAllowed]
         public ActionResult CropHead(string imgUrl,double imgInitW,double imgInitH,double imgW,double imgH, double imgX1, int imgY1, double cropW, double cropH,double rotation)
         {
             if (string.IsNullOrEmpty(imgUrl))

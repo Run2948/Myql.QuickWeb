@@ -7,6 +7,17 @@
 * `Quick.Service`：业务逻辑层
 * `QuickWeb`：UI表现层
 
+#### 项目说明：
+* 数据库初始化脚本：[snake.sql](./docs/snake.sql)
+* 登录界面：![](./docs/login.png)
+* 欢迎页面：![](./docs/welcome.png)
+* 权限管理：![](./docs/node.png)
+* 权限分配：![](./docs/auth.png)
+* 数据备份：![](./docs/backup.png)
+* 文章列表：![](./docs/article.png)
+基于ASP.NET MVC5 + SqlSuagr(数据库为：MySql，也可以自行切换到SQL Server数据库，更多配置详情请参考 [SqlSugar4文档](http://www.codeisbug.com/Doc/8/) )，旨在为大家提供一个可用的便捷的后台系统。
+* 武汉一世计科软件有限公司 &copy;2017 - 2019  &nbsp;&nbsp;&nbsp;&nbsp; 联系QQ：1004850985
+
 #### 关键技术
 * 1.Asp.Net Mvc 5.2.7
 * 2.SqlSugar

@@ -35,6 +35,7 @@ namespace QuickWeb.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    if(!IsValidateCode(request.code)) return No("验证码错误！");
                     request.password = request.password.ToSaltMD5(JsonConfig.GetString("salt"));
                     var userInfo = snake_userService.Login(request.user_name, request.password);
                     if (userInfo != null)
@@ -71,9 +72,9 @@ namespace QuickWeb.Controllers
             if (string.IsNullOrEmpty(rule))
                 return rights;
             var ids = rule.Contains("*")
-                ? snake_nodeService.GetAll().Select(x=>x.id).ToList()
+                ? snake_nodeService.LoadEntities(l=>l.type_id > 0).Select(x=>x.id).ToList()
                 : rule.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => Convert.ToInt32(x)).ToList();
-            rights = snake_nodeService.LoadEntities(l=> new List<int>().Contains(l.id)).Select(item => $"{item.control_name}/{item.action_name}").ToList();
+            rights = snake_nodeService.LoadEntities(l=> ids.Contains(l.id)).ToList().Select(item => $"{item.control_name}/{item.action_name}").ToList();
             return rights;
         }
         #endregion

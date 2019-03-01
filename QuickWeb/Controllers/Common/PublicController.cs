@@ -37,12 +37,12 @@ namespace QuickWeb.Controllers
 
         #region 平台通用图形验证码
         [HttpGet]
-        public ActionResult VerifyCode(int l = 4, int f = 15, int h = 30)
+        public ActionResult VerifyCode(int l = 4, int f = 15, int w = 100, int h = 32)
         {
             string code = DrawingSecurityCode.GenerateCheckCode(l);
             //Session.SetByRedis("member_valid_code", code, expire: 5);//将验证码生成到Session中
             TempData["valid_code"] = code;  // 将验证码存储到 TempData 中
-            System.Web.HttpContext.Current.CreateCheckCodeImage(code, fontsize: f, height: h);
+            System.Web.HttpContext.Current.CreateCheckCodeImage(code, fontsize: f, width: w, height: h);
             Response.ContentType = "image/jpeg";
             return File(Encoding.UTF8.GetBytes(code), Response.ContentType);
         }

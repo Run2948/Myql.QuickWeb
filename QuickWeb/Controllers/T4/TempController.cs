@@ -31,7 +31,7 @@ namespace QuickWeb.Controllers
     /// </summary>
     public class TempController : Controller
     {
-		public Isnake_articlesService snake_articlesService { get;set; }	
+		public Isnake_articleService snake_articleService { get;set; }	
 
 		public Isnake_nodeService snake_nodeService { get;set; }	
 

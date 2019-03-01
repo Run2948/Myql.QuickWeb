@@ -35,7 +35,7 @@ CREATE TABLE `snake_article`  (
 -- ----------------------------
 -- Records of snake_article
 -- ----------------------------
-INSERT INTO `snake_article` VALUES (1, '文章标题', '文章描述', '关键字1,关键字2,关键字3', '/upload/20170916/1e915c70dbb9d3e8a07bede7b64e4cff.png', '<p><img src=\"/upload/image/20170916/1505555254.png\" title=\"1505555254.png\" alt=\"QQ截图20170916174651.png\"/></p><p>测试文章内容</p><p>测试内容</p>', '2017-09-16 17:47:44');
+INSERT INTO `snake_article` VALUES (1, '文章标题', '文章描述', '关键字1,关键字2,关键字3', '/Content/admin/images/profile_small.jpg', '<p><img src=\"/Content/admin/images/profile_small.jpg\" title=\"1505555254.png\" alt=\"QQ截图20190301174651.png\"/></p><p>测试文章内容</p><p>测试内容</p>', '2017-09-16 17:47:44');
 
 -- ----------------------------
 -- Table structure for snake_node
@@ -78,10 +78,9 @@ INSERT INTO `snake_node` VALUES (20, '文章列表', 'article', 'index', 2, 19, 
 INSERT INTO `snake_node` VALUES (21, '添加文章', 'article', 'articleadd', 1, 19, '');
 INSERT INTO `snake_node` VALUES (22, '编辑文章', 'article', 'articleedit', 1, 19, '');
 INSERT INTO `snake_node` VALUES (23, '删除文章', 'article', 'articledel', 1, 19, '');
-INSERT INTO `snake_node` VALUES (24, '上传图片', 'article', 'uploadImg', 1, 19, '');
-INSERT INTO `snake_node` VALUES (25, '个人中心', '#', '#', 1, 0, '');
-INSERT INTO `snake_node` VALUES (26, '修改信息', 'profile', 'index', 1, 25, NULL);
-INSERT INTO `snake_node` VALUES (27, '修改密码', 'profile', 'pwdedit', 1, 25, NULL);
+INSERT INTO `snake_node` VALUES (24, '个人中心', '#', '#', 1, 0, '');
+INSERT INTO `snake_node` VALUES (25, '修改信息', 'profile', 'index', 1, 25, NULL);
+INSERT INTO `snake_node` VALUES (26, '修改密码', 'profile', 'pwdedit', 1, 25, NULL);
 
 -- ----------------------------
 -- Table structure for snake_role
@@ -121,6 +120,6 @@ CREATE TABLE `snake_user`  (
 -- ----------------------------
 -- Records of snake_user
 -- ----------------------------
-INSERT INTO `snake_user` VALUES (1, 'admin', 'b621c5577f6de890faf78dc9797e7187', 'admin', 42, NULL, NULL, 'admin', 1, 1);
+INSERT INTO `snake_user` VALUES (1, 'admin', 'b621c5577f6de890faf78dc9797e7187', 'admin', 0, NULL, NULL, 'admin', 1, 1);
 
 SET FOREIGN_KEY_CHECKS = 1;

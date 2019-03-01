@@ -36,10 +36,10 @@
             <div class="col-sm-5">
                 <form class="">
                     <p class="m-t-md" id="err_msg">登录到 snake 后台</p>
-                    <input type="text" class="form-control uname" placeholder="用户名" id="user_name" />
-                    <input type="password" class="form-control pword m-b" placeholder="密码" id="password" />
+                    <input type="text" class="form-control uname" placeholder="用户名" id="user_name"/>
+                    <input type="password" class="form-control pword m-b" placeholder="密码" id="password" autocomplete="off"/>
                     <div style="margin-bottom:70px">
-                        <input type="text" class="form-control" placeholder="验证码" style="color:black;width:120px;float:left;margin:0px 0px;" name="code" id="code" />
+                        <input type="text" class="form-control" placeholder="验证码" style="color:black;width:120px;float:left;margin:0px 0px;" name="code" id="code" autocomplete="off"/>
                         <img id="verify" src="@Url.Action("VerifyCode","Public")" onclick="javascript:this.src='@Url.Action("VerifyCode","Public")?tm='+Math.random();" style="float:right;cursor: pointer" />
                     </div>
                     <input class="btn btn-success btn-block" id="login_btn" value="登录" />

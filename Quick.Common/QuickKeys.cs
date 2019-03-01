@@ -37,5 +37,9 @@ namespace Quick.Common
         /// 用户登录地址
         /// </summary>
         public const string UserLogin = "/UserLogin";
+        /// <summary>
+        /// 用户无权访问
+        /// </summary>
+        public const string NoPermission = "/Error/AccessNoRight";
     }
 }

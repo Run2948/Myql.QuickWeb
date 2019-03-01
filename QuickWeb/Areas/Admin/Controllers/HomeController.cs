@@ -18,6 +18,7 @@ namespace QuickWeb.Areas.Admin.Controllers
     {
         public Isnake_nodeService snake_nodeService { get; set; }
 
+        [HttpGet,CustomAllowed]
         // GET: Admin/Home
         public ActionResult Index()
         {
@@ -28,15 +29,13 @@ namespace QuickWeb.Areas.Admin.Controllers
 
         #region 欢迎页面
 
-        [CustomAllowedAttribute]
-        [HttpGet]
+        [HttpGet,CustomAllowed]
         public ActionResult Welcome()
         {
             return View();
         }
 
-        [CustomAllowedAttribute]
-        [HttpGet]
+        [HttpGet,CustomAllowed]
         public ActionResult GetToday()
         {
             return Ok(DataHelper.GetData());

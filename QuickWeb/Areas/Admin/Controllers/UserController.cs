@@ -12,6 +12,7 @@ using Quick.Models.Entity.Table;
 using QuickWeb.Areas.Admin.Models.RequestModel;
 using QuickWeb.Areas.Admin.Models.ViewModel;
 using QuickWeb.Controllers.Common;
+using QuickWeb.Filters;
 
 namespace QuickWeb.Areas.Admin.Controllers
 {
@@ -27,6 +28,7 @@ namespace QuickWeb.Areas.Admin.Controllers
             return View();
         }
 
+        [HttpGet,CustomAllowed]
         public ActionResult GetData(AdminBaseRequest request)
         {
             var list = snake_userService.GetPureUsers(request.PageIndex, request.PageSize, ref request.TotalCount, request.searchText);

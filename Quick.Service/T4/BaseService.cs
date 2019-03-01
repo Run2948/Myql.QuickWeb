@@ -627,9 +627,9 @@ namespace Quick.Service
 	}
 
     /// <summary>
-    /// snake_articles业务类
+    /// snake_article业务类
     /// </summary>
-	public partial class snake_articlesService : BaseService<snake_articles>, Isnake_articlesService
+	public partial class snake_articleService : BaseService<snake_article>, Isnake_articleService
 	{
 		
 	}

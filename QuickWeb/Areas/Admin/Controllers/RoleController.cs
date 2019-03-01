@@ -12,6 +12,7 @@ using Quick.Service;
 using QuickWeb.Areas.Admin.Models.RequestModel;
 using QuickWeb.Areas.Admin.Models.ViewModel;
 using QuickWeb.Controllers.Common;
+using QuickWeb.Filters;
 
 namespace QuickWeb.Areas.Admin.Controllers
 {
@@ -27,6 +28,7 @@ namespace QuickWeb.Areas.Admin.Controllers
             return View();
         }
 
+        [HttpGet,CustomAllowed]
         public ActionResult GetData(AdminBaseRequest request)
         {
             Expression<Func<snake_role, bool>> where = l => true;
@@ -112,7 +114,7 @@ namespace QuickWeb.Areas.Admin.Controllers
 
         #region 为角色分配权限
         [HttpGet]
-        public ActionResult GetAccess(int? id)
+        public ActionResult GiveAccess(int? id)
         {
             if (IsIllegalId(id)) return ParamsError();
             var nodes = GetAllNodes();
@@ -138,6 +140,7 @@ namespace QuickWeb.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [CustomAllowed]
         public ActionResult SetAccess(int? id, string rule)
         {
             if (IsIllegalId(id)) return ParamsError();

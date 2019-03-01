@@ -30,9 +30,9 @@ namespace Quick.Models.Application
 		public SqlSugarClient Db; 
 		
 		/// <summary>
-		/// 用来处理snake_articles表的常用操作
+		/// 用来处理snake_article表的常用操作
 		/// </summary>
-		public DbSet<snake_articles> snake_articlesDb => new DbSet<snake_articles>(Db); 
+		public DbSet<snake_article> snake_articleDb => new DbSet<snake_article>(Db); 
 
 		/// <summary>
 		/// 用来处理snake_node表的常用操作

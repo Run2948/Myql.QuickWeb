@@ -1,21 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Web;
 using System.Web.Mvc;
 using Masuit.Tools.Logging;
 using Quick.IService;
 using Quick.Models.Entity.Table;
-using Quick.Service;
 using QuickWeb.Areas.Admin.Models.RequestModel;
 using QuickWeb.Controllers.Common;
+using QuickWeb.Filters;
 
 namespace QuickWeb.Areas.Admin.Controllers
 {
     public class ArticleController : UserBaseController
     {
-        public Isnake_articlesService snake_articlesService { get; set; }
+        public Isnake_articleService snake_articleService { get; set; }
 
         #region 文章列表
         // GET: Admin/Article
@@ -24,13 +22,13 @@ namespace QuickWeb.Areas.Admin.Controllers
             return View();
         }
 
-        [HttpGet]
+        [HttpGet,CustomAllowed]
         public ActionResult GetData(AdminBaseRequest request)
         {
-            Expression<Func<snake_articles, bool>> where = l => true;
+            Expression<Func<snake_article, bool>> where = l => true;
             if (!string.IsNullOrEmpty(request.searchText))
                 where = l => l.title.Contains(request.searchText);
-            var data = snake_articlesService.LoadPageEntities<snake_articles>(request.PageIndex, request.PageSize, ref request.TotalCount, where, l => l.id, false).ToList();
+            var data = snake_articleService.LoadPageEntities<snake_article>(request.PageIndex, request.PageSize, ref request.TotalCount, where, l => l.id, false).ToList();
             return Table(request.TotalCount, data);
         }
         #endregion
@@ -44,12 +42,12 @@ namespace QuickWeb.Areas.Admin.Controllers
         [HttpPost]
         [ValidateInput(false)]
         [ValidateAntiForgeryToken]
-        public ActionResult AddArticle(snake_articles model)
+        public ActionResult AddArticle(snake_article model)
         {
             try
             {
                 model.add_time = DateTime.Now;
-                snake_articlesService.AddEntity(model);
+                snake_articleService.AddEntity(model);
             }
             catch (Exception e)
             {
@@ -64,7 +62,7 @@ namespace QuickWeb.Areas.Admin.Controllers
         public ActionResult ArticleEdit(int? id)
         {
             if (IsIllegalId(id)) return ParamsError();
-            var model = snake_articlesService.GetById(id);
+            var model = snake_articleService.GetById(id);
             if (model == null) return NoOrDeleted();
             return View(model);
         }
@@ -72,19 +70,19 @@ namespace QuickWeb.Areas.Admin.Controllers
         [HttpPost]
         [ValidateInput(false)]
         [ValidateAntiForgeryToken]
-        public ActionResult EditArticle(snake_articles model)
+        public ActionResult EditArticle(snake_article model)
         {
             if (IsIllegalId(model.id)) return ParamsError();
             try
             {
-                var editModel = snake_articlesService.GetById(model.id);
+                var editModel = snake_articleService.GetById(model.id);
                 if (editModel == null) return NoOrDeleted();
                 editModel.title = model.title;
                 editModel.description = model.description;
                 editModel.keywords = model.keywords;
                 editModel.thumbnail = model.thumbnail;
                 editModel.content = model.content;
-                snake_articlesService.UpdateEntity(editModel);
+                snake_articleService.UpdateEntity(editModel);
             }
             catch (Exception e)
             {
@@ -101,11 +99,11 @@ namespace QuickWeb.Areas.Admin.Controllers
             if (IsIllegalId(id)) return ParamsError();
             try
             {
-                var model = snake_articlesService.GetById(id);
+                var model = snake_articleService.GetById(id);
                 if (model == null) return NoOrDeleted();
                 if (!string.IsNullOrEmpty(model.thumbnail))
                     DeleteFile(Server.MapPath(model.thumbnail));
-                snake_articlesService.DeleteEntity(model);
+                snake_articleService.DeleteEntity(model);
             }
             catch (Exception e)
             {

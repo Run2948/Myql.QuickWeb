@@ -63,11 +63,12 @@ namespace Quick.Common
         /// 根据验证码字符串生成验证码图片
         /// </summary>
         /// <param name="checkCode">验证码字符串</param>
-        public static void CreateCheckCodeImage(this HttpContext context, string checkCode, int fontsize = 15, int height = 26)
+        public static void CreateCheckCodeImage(this HttpContext context, string checkCode, int fontsize = 15,int width = 0, int height = 26)
         {
             if (checkCode == null || checkCode.Trim() == String.Empty) return;
+            if(width == 0) width = checkCode.Length * 14;
             // 引用System.Drawing类库
-            using (Bitmap image = new Bitmap(checkCode.Length * 14, height))//生成一个指定大小的位图
+            using (Bitmap image = new Bitmap(width, height))//生成一个指定大小的位图
             {
                 using (Graphics g = Graphics.FromImage(image)) //从一个位图生成一个画布
                 {
@@ -93,14 +94,20 @@ namespace Quick.Common
                     }
 
                     Font font = new Font("Arial", fontsize, FontStyle.Bold); //定义特定的文本格式,这里的字体为Arial，大小为15,字体加粗
+
                     //根据矩形、起始颜色和结束颜色以及方向角度产生一个LinearGradientBrush实例---线性渐变
                     System.Drawing.Drawing2D.LinearGradientBrush brush =
                         new System.Drawing.Drawing2D.LinearGradientBrush(
                             new Rectangle(0, 0, image.Width, image.Height),//在坐标0,0处实例化一个和image同样大小的矩形
                             Color.Blue, Color.Red, 1.2f, true);
-                    //绘制文本字符串
-                    g.DrawString(checkCode, font, brush, 2, 2);
+                    
+                    // 文本长度
+                    var sizeF = g.MeasureString(checkCode,font);
+                    float paddingLeft = (width - sizeF.Width) / 2;
+                    float paddingTop = (height - sizeF.Height)/ 2;
 
+                    //绘制文本字符串
+                    g.DrawString(checkCode, font, brush, paddingLeft, paddingTop);
                     //绘制有坐标对、宽度和高度指定的矩形---画图片的边框线
                     g.DrawRectangle(new Pen(Color.Silver), 0, 0, image.Width - 1, image.Height - 1);
                     //创建其支持存储器为内存的流

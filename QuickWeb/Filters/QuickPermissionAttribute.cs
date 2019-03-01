@@ -30,13 +30,11 @@ namespace QuickWeb.Filters
 
         public bool IsAjax = false;
 
+        public string MethodType = string.Empty;
+
         public bool IsDebug = ConfigurationManager.AppSettings["IsDebug"] != null && bool.Parse(ConfigurationManager.AppSettings["IsDebug"]);
 
         #region Session相关
-        public bool IsUserLogin()
-        {
-            return HttpContext.Current.Session.Get<UserInfoOutputDto>(QuickKeys.UserSession) != null;
-        }
 
         public UserInfoOutputDto GetUserSession()
         {
@@ -54,44 +52,40 @@ namespace QuickWeb.Filters
             AreaName = filterContext.RouteData.DataTokens["area"]?.ToString();
             ControllerName = filterContext.RouteData.Values["controller"]?.ToString();
             ActionName = filterContext.RouteData.Values["action"]?.ToString();
+            MethodType = filterContext.HttpContext.Request.HttpMethod.ToUpper();
 
             // 调试模式
             if (IsDebug)
                 return;
-
-            // 放过 不需要登陆的页面 (找回密码页面等等...)
-            if (filterContext.ActionDescriptor.GetCustomAttributes(typeof(AllowAnonymousAttribute), true).Length > 0)
-            {
-                filterContext.HttpContext.SkipAuthorization = true;
-                return;
-            }
             
+            var currentUser = GetUserSession();
             // 拦截 未登录用户
-            if (!IsUserLogin())
+            if (currentUser == null)
             {
+                // 放过 不需要登陆的页面 (找回密码页面等等...)
+                if (filterContext.ActionDescriptor.GetCustomAttributes(typeof(AllowAnonymousAttribute), true).Length > 0)
+                {
+                    filterContext.HttpContext.SkipAuthorization = true;
+                    return;
+                }
+
                 filterContext.Result = new RedirectResult(QuickKeys.UserLogin);
                 return;
             }
 
-            // 放过 登录用户公共操作权限(注销登陆等等...)
-            if (filterContext.ActionDescriptor.GetCustomAttributes(typeof(CustomAllowedAttribute), true).Length > 0)
+            // 控制用户的权限
+            if("GET".Equals(MethodType) && !currentUser.rights.Contains($"{ControllerName.ToLower()}/{ActionName.ToLower()}"))
             {
-                filterContext.HttpContext.SkipAuthorization = true;
+                // 放过 登录用户公共操作权限(注销登录首页欢迎页等等...)
+                if (filterContext.ActionDescriptor.GetCustomAttributes(typeof(CustomAllowedAttribute), true).Length > 0)
+                {
+                    filterContext.HttpContext.SkipAuthorization = true;
+                    return;
+                }
+
+                filterContext.Result = new RedirectResult(QuickKeys.NoPermission);
                 return;
             }
-
-            #region 拦截角色
-            //var currentUser = UserInfoService.GetById(GetUserSession().Id);
-            // 管理员
-            //if (currentUser.IsAdmin)
-            //{
-            //    if (string.IsNullOrEmpty(AreaName) || !AreaName.ToLower().Equals("admin"))
-            //    {
-            //        filterContext.Result = new RedirectResult(QuickKeys.AdminHome);
-            //        return;
-            //    }
-            //} 
-            #endregion
 
             base.OnAuthorization(filterContext);
         }

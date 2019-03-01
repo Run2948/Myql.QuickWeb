@@ -461,9 +461,9 @@ namespace Quick.IService
     }
 
     /// <summary>
-    /// snake_articles业务接口
+    /// snake_article业务接口
     /// </summary>
-	public partial interface Isnake_articlesService : IBaseService<snake_articles>
+	public partial interface Isnake_articleService : IBaseService<snake_article>
 	{
 		
 	}

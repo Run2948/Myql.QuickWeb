@@ -9,6 +9,7 @@ using Quick.IService;
 using Quick.Models.Entity.Table;
 using QuickWeb.Areas.Admin.Models.ViewModel;
 using QuickWeb.Controllers.Common;
+using QuickWeb.Filters;
 
 namespace QuickWeb.Areas.Admin.Controllers
 {
@@ -23,7 +24,7 @@ namespace QuickWeb.Areas.Admin.Controllers
             return View();
         }
 
-        [HttpGet]
+        [HttpGet,CustomAllowed]
         public ActionResult GetData()
         {
             var roots = GetNodeTrees();

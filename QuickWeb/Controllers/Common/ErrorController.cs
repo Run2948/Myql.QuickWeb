@@ -101,7 +101,7 @@ namespace QuickWeb.Controllers
         {
             if (Request.HttpMethod.ToLower().Equals("get"))
             {
-                return View("~/Views/Error/Index.cshtml");
+                return View("~/Views/Error/ParamsError.cshtml");
             }
             return Json(new
             {
@@ -119,7 +119,7 @@ namespace QuickWeb.Controllers
         {
             if (Request.HttpMethod.ToLower().Equals("get"))
             {
-                return View("~/Views/Error/Index.cshtml");
+                return View("~/Views/Error/NoOrDeleted.cshtml");
             }
             return Json(new
             {
