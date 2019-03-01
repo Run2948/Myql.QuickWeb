@@ -32,6 +32,18 @@ namespace QuickWeb
             {
                 //m.CreateMap<UserInfoView, UserInfoOutputDto>();
                 m.CreateMap<UserInfoOutputDto, UserInfoView>().ForMember(dest => dest.rule, opt => opt.Ignore());
+                //m.CreateMap<RoleInfoView, snake_role>();
+                m.CreateMap<snake_role, RoleInfoView>().ForMember(dest => dest.rule, opt => opt.Ignore());
+                //m.CreateMap<NodeInfoView, snake_role>();
+                m.CreateMap<snake_node, NodeInfoView>()
+                    .ForMember(dest => dest.name, opt => opt.MapFrom(sc => sc.node_name))
+                    .ForMember(dest => dest.pId, opt => opt.MapFrom(sc => sc.type_id))
+                    .ForMember(dest => dest.@checked, opt => opt.Ignore());
+                //m.CreateMap<NodeTreeView, snake_role>();
+                m.CreateMap<snake_node, NodeTreeView>()
+                    .ForMember(dest => dest.name, opt => opt.MapFrom(sc => sc.node_name))
+                    .ForMember(dest => dest.pid, opt => opt.MapFrom(sc => sc.type_id))
+                    .ForMember(dest => dest.children, opt => opt.Ignore());
             });
         }
     }

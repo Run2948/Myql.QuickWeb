@@ -5,6 +5,8 @@ using QuickWeb.Models.RequestModel;
 using System;
 using System.Web.Mvc;
 using Quick.IService;
+using Quick.Common.Security;
+using Quick.Common;
 
 namespace QuickWeb.Controllers
 {
@@ -30,6 +32,7 @@ namespace QuickWeb.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    request.Password = request.Password.ToSaltMD5(JsonConfig.GetString("salt"));
                     var userInfo = snake_userService.Login(request.Username,request.Password);
                     if (userInfo != null)
                     {

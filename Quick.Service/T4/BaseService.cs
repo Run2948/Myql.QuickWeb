@@ -23,6 +23,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Data;
 using System.Threading.Tasks;
 using Quick.IService;
 using Quick.Models.Application;
@@ -169,6 +170,28 @@ namespace Quick.Service
         {
             return parameters == null ? Db.Ado.ExecuteCommand(sql) : Db.Ado.ExecuteCommand(sql, parameters);
         }
+
+		/// <summary>
+        /// 获取DataTable数据
+        /// </summary>
+        /// <param name="sql">待执行的sql语句</param>
+        /// <param name="parameters">预编译的参数</param>
+        /// <returns></returns>
+        public DataTable GetDataTable(string sql,object parameters = null)
+        {
+            return parameters == null ? Db.Ado.GetDataTable(sql) : Db.Ado.GetDataTable(sql,parameters);
+        }
+
+		/// <summary>
+        /// 获取数据的记录数
+        /// </summary>
+        /// <param name="sql">待执行的sql语句</param>
+        /// <param name="parameters">预编译的参数</param>
+        /// <returns></returns>
+        public int GetCount(string sql,object parameters = null)
+		{
+			return parameters == null ? Db.Ado.GetInt(sql) : Db.Ado.GetInt(sql,parameters);
+		}
 
         #endregion
 

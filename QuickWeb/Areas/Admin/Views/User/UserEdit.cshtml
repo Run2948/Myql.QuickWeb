@@ -1,7 +1,6 @@
 ﻿@model snake_user
 @{
     ViewBag.Title = "编辑管理员";
-    ViewBag.GlobalStyle = "animated fadeInRight";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
@@ -10,83 +9,85 @@
     <link href="~/Content/admin/css/plugins/iCheck/custom.css" rel="stylesheet">
 }
 
-<div class="row">
-    <div class="col-sm-8">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>编辑管理员</h5>
-            </div>
-            <div class="ibox-content">
-                <form class="form-horizontal m-t" id="commentForm" method="post" action="@Url.Action("EditUser","User",new { area = "Admin"})">
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">管理员名称：</label>
-                        <div class="input-group col-sm-4">
-                            <input id="username" type="text" class="form-control" name="user_name" required="" aria-required="true" value="@(Model.user_name)">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>编辑管理员</h5>
+                </div>
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" id="commentForm" method="post" action="@Url.Action("EditUser")">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">管理员名称：</label>
+                            <div class="input-group col-sm-4">
+                                <input id="username" type="text" class="form-control" name="user_name" required="" aria-required="true" value="@(Model.user_name)">
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">管理员角色：</label>
-                        <div class="input-group col-sm-4">
-                            <select class="form-control" name="role_id" required="" aria-required="true">
-                                <option value="">请选择</option>
-                                @if (ViewData["user_role"] != null)
-                                {
-                                    if (ViewData["user_role"] is List<snake_role> roles)
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">管理员角色：</label>
+                            <div class="input-group col-sm-4">
+                                <select class="form-control" name="role_id" required="" aria-required="true">
+                                    <option value="">请选择</option>
+                                    @if (ViewData["user_role"] != null)
                                     {
-                                        foreach (var item in roles)
+                                        if (ViewData["user_role"] is List<snake_role> roles)
                                         {
-                                            <option value="@(item.id)" @(Model.role_id == item.id?"selected":"")>@(item.role_name)</option>
+                                            foreach (var item in roles)
+                                            {
+                                                <option value="@(item.id)" @(Model.role_id == item.id ? "selected" : "")>@(item.role_name)</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">登录密码：</label>
+                            <div class="input-group col-sm-4">
+                                <input id="password" type="text" class="form-control" name="password" placeholder="再次输入修改密码" aria-required="true">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">真实姓名：</label>
+                            <div class="input-group col-sm-4">
+                                <input id="real_name" type="text" class="form-control" name="real_name" required="" aria-required="true" value="@(Model.real_name)">
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">是否启用：</label>
+                            <div class="input-group col-sm-6">
+                                @if (ViewData["user_status"] != null)
+                                {
+                                    if (ViewData["user_status"] is Dictionary<string, string> dict)
+                                    {
+                                        foreach (var item in dict)
+                                        {
+                                            <div class="radio i-checks col-sm-4">
+                                                <label>
+                                                    <input type="radio" value="@(item.Value)" @(item.Value == Model.status.ToString() ? "checked" : "") name="status"> <i></i> @(item.Key)
+                                                </label>
+                                            </div>
                                         }
                                     }
                                 }
-                            </select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">登录密码：</label>
-                        <div class="input-group col-sm-4">
-                            <input id="password" type="text" class="form-control" name="password" placeholder="再次输入修改密码"  aria-required="true">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">真实姓名：</label>
-                        <div class="input-group col-sm-4">
-                            <input id="real_name" type="text" class="form-control" name="real_name" required="" aria-required="true" value="@(Model.real_name)">
-
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">是否启用：</label>
-                        <div class="input-group col-sm-6">
-                            @if (ViewData["user_status"] != null)
-                            {
-                                if (ViewData["user_status"] is Dictionary<string, string> dict)
-                                {
-                                    foreach (var item in dict)
-                                    {
-                                        <div class="radio i-checks col-sm-4">
-                                            <label>
-                                                <input type="radio" value="@(item.Value)" @(item.Value == Model.status.ToString() ? "checked" : "") name="status"> <i></i> @(item.Key)
-                                            </label>
-                                        </div>
-                                    }
-                                }
-                            }
-                        </div>
-                    </div>
-                    <div class="form-group">
                         <div class="form-group">
-                            <div class="col-sm-1 col-sm-offset-5">
-                                <a class="btn btn-default" href="@Url.Action("Index")">取消</a>
-                            </div>
-                            <div class="col-sm-1">
-                                @Html.AntiForgeryToken()
-                                @Html.HiddenFor(model => model.id)
-                                <button class="btn btn-primary" type="submit">保存</button>
+                            <div class="form-group">
+                                <div class="col-sm-1 col-sm-offset-5">
+                                    <a class="btn btn-default" href="@Url.Action("Index")">取消</a>
+                                </div>
+                                <div class="col-sm-1">
+                                    @Html.AntiForgeryToken()
+                                    @Html.HiddenFor(model => model.id)
+                                    <button class="btn btn-primary" type="submit">提交</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -96,7 +97,7 @@
     <script src="~/Content/admin/js/plugins/validate/jquery.validate.min.js"></script>
     <script src="~/Content/admin/js/plugins/validate/messages_zh.min.js"></script>
     <script src="~/Content/admin/js/plugins/iCheck/icheck.min.js"></script>
-    <script src="~/Content/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="~/Assets/layer/layer.min.js"></script>
     <script src="~/Content/admin/js/jquery.form.js"></script>
     <script type="text/javascript">
         var index = '';
@@ -109,7 +110,7 @@
             layer.ready(function () {
                 layer.close(index);
                 if (1 == res.status) {
-                    layer.alert("数据修改成功！", { title: '友情提示', icon: 1, closeBtn: 0 }, function (self) {
+                    layer.alert("用户信息修改成功！", { title: '友情提示', icon: 1, closeBtn: 0 }, function (self) {
                         layer.close(self);
                         window.location.href = '@Url.Action("Index")';
                     });

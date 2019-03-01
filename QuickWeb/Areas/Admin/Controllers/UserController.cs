@@ -27,7 +27,6 @@ namespace QuickWeb.Areas.Admin.Controllers
             return View();
         }
 
-        [HttpGet]
         public ActionResult GetData(AdminBaseRequest request)
         {
             var list = snake_userService.GetPureUsers(request.PageIndex, request.PageSize, ref request.TotalCount, request.searchText);

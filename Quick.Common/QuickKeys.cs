@@ -37,30 +37,5 @@ namespace Quick.Common
         /// 用户登录地址
         /// </summary>
         public const string UserLogin = "/UserLogin";
-        /// <summary>
-        /// 管理员中心
-        /// </summary>
-        public const string AdminHome = "/Admin/Home";
-        /// <summary>
-        /// 战训专家中心
-        /// </summary>
-        public const string ExpertHome = "/Expert";
-        /// <summary>
-        /// 支队指挥员
-        /// </summary>
-        public const string DetachHome = "/Detach";
-        /// <summary>
-        /// 大队指挥员
-        /// </summary>
-        public const string BrigadeHome = "/Brigade";
-        /// <summary>
-        /// 中队指挥员
-        /// </summary>
-        public const string SquadronHome = "/Squadron";
-        /// <summary>
-        /// 战斗员
-        /// </summary>
-        public const string FighterHome = "/Fighter";
-        
     }
 }

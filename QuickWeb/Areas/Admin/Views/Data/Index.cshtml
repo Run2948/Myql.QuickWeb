@@ -1,0 +1,114 @@
+﻿@model List<DbTableView>
+@{
+    ViewBag.Title = "数据备份/还原";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section styles  {
+    <link href="~/Content/admin/css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>数据表列表</h5>
+            </div>
+            <div class="ibox-content">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>表名</th>
+                            <th>记录数</th>
+                            <th>上次备份时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var t in Model)
+                            {
+                                <tr>
+                                    <td>@(t.table_name)</td>
+                                    <td>@(t.counts)</td>
+                                    <td>@(t.back_time)</td>
+                                    <td>
+                                        <a href="javascript:backData('@(t.table_name)')" class="btn btn-primary btn-sm"><i class="fa fa-tasks"></i> 备份</a>
+                                        <a href="javascript:importData('@(t.table_name)')" class="btn btn-info btn-sm"><i class="fa fa-retweet"></i> 还原</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- End Panel Other -->
+</div>
+<!-- 等待窗口 -->
+<div class="col-sm-12" style="display: none" id="wait">
+    <div class="ibox ">
+        <div class="ibox-content">
+            <div class="spiner-example">
+                <div class="sk-spinner sk-spinner-three-bounce">
+                    <div class="sk-bounce1"></div>
+                    <div class="sk-bounce2"></div>
+                    <div class="sk-bounce3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts  {
+    <script src="~/Content/admin/js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+    <script src="~/Content/admin/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+    <script src="~/Content/admin/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+    <script src="~/Content/admin/js/plugins/suggest/bootstrap-suggest.min.js"></script>
+    <script src="~/Assets/layer/layer.min.js"></script>
+    <script type="text/javascript">
+        function importData(table, all) {
+            var index = layer.open({
+                type: 1,
+                area: '400px',
+                title: '正在操作',
+                skin: 'layui-layer-demo', //加上边框
+                content: $('#wait')
+            });
+            $.getJSON("@Url.Action("ImportData")", { 'table': table }, function (res) {
+                layer.close(index);
+                if (1 == res.status) {
+                    layer.alert('还原成功！', { icon: 1 }, function () {
+                        window.location.reload();
+                    });
+                } else {
+                    layer.alert(res.msg, { icon: 2 });
+                }
+            });
+        }
+
+        function backData(table) {
+            var index = layer.open({
+                type: 1,
+                area: '400px',
+                title: '正在操作',
+                skin: 'layui-layer-demo', //加上边框
+                content: $('#wait')
+            });
+            $.getJSON("@Url.Action("BackData")", { 'table': table }, function (res) {
+                layer.close(index);
+                if (1 == res.status) {
+                    layer.alert('备份成功！', { icon: 1 }, function () {
+                        window.location.reload();
+                    });
+                } else {
+                    layer.alert(res.msg, { icon: 2 });
+                }
+            });
+        }
+    </script>
+}
+

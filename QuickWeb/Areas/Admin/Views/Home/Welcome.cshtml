@@ -1,7 +1,6 @@
 ﻿
 @{
     ViewBag.Title = "欢迎页面";
-    ViewBag.GlobalStyle = "";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
@@ -9,121 +8,125 @@
 
 }
 
-<!-- 会话量展示
-<div class="row">
-    <div class="col-sm-2">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <span class="label label-primary pull-right">今天</span>
-                <h5>正在咨询的人数</h5>
-            </div>
-            <div class="ibox-content">
-                <h1 class="no-margins">20</h1>
-                <div class="stat-percent font-bold text-navy"></div>
-                <small></small>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-2">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <span class="label label-primary pull-right">今天</span>
-                <h5>正在排队的用户</h5>
-            </div>
-            <div class="ibox-content">
-                <h1 class="no-margins">10</h1>
-                <div class="stat-percent font-bold text-danger"></div>
-                <small></small>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-2">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <span class="label label-primary pull-right">今天</span>
-                <h5>当前在线客服数</h5>
-            </div>
-            <div class="ibox-content">
-                <h1 class="no-margins">5</h1>
-                <div class="stat-percent font-bold text-danger"></div>
-                <small></small>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-2">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <span class="label label-primary pull-right">今天</span>
-                <h5>接入会话量</h5>
-            </div>
-            <div class="ibox-content">
-                <h1 class="no-margins">150</h1>
-                <div class="stat-percent font-bold text-danger"></div>
-                <small></small>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-2">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <span class="label label-primary pull-right">今天</span>
-                <h5>完成会话量</h5>
-            </div>
-            <div class="ibox-content">
-                <h1 class="no-margins">50</h1>
-                <div class="stat-percent font-bold text-danger"></div>
-                <small></small>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-2">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <span class="label label-primary pull-right">今天</span>
-                <h5>总会话量</h5>
-            </div>
-            <div class="ibox-content">
-                <h1 class="no-margins">300</h1>
-                <div class="stat-percent font-bold text-danger"></div>
-                <small></small>
-            </div>
-        </div>
-    </div>
-</div>
--->
+<div class="wrapper wrapper-content">
 
-<div class="row">
-    <div class="col-sm-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>系统说明</h5>
+    <!-- 会话量展示
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-primary pull-right">今天</span>
+                    <h5>正在咨询的人数</h5>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins">20</h1>
+                    <div class="stat-percent font-bold text-navy"></div>
+                    <small></small>
+                </div>
             </div>
-            <div class="ibox-content">
-                <p>
-                    【snake】一个采用asp.net mvc5开发，
-                    旨在为大家提供一个可用的便捷的后台系统。
-                </p>
-                <div class="alert alert-info">
-                    交流群： 257326170
+        </div>
+        <div class="col-sm-2">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-primary pull-right">今天</span>
+                    <h5>正在排队的用户</h5>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins">10</h1>
+                    <div class="stat-percent font-bold text-danger"></div>
+                    <small></small>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-primary pull-right">今天</span>
+                    <h5>当前在线客服数</h5>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins">5</h1>
+                    <div class="stat-percent font-bold text-danger"></div>
+                    <small></small>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-primary pull-right">今天</span>
+                    <h5>接入会话量</h5>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins">150</h1>
+                    <div class="stat-percent font-bold text-danger"></div>
+                    <small></small>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-primary pull-right">今天</span>
+                    <h5>完成会话量</h5>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins">50</h1>
+                    <div class="stat-percent font-bold text-danger"></div>
+                    <small></small>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-primary pull-right">今天</span>
+                    <h5>总会话量</h5>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins">300</h1>
+                    <div class="stat-percent font-bold text-danger"></div>
+                    <small></small>
                 </div>
             </div>
         </div>
     </div>
-</div>
+    -->
 
-<div class="row">
-    <div class="col-sm-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>今日数据分析</h5>
-            </div>
-            <div class="ibox-content no-padding">
-                <div class="ibox-content" style="height: 350px" id="main">
-
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>系统说明</h5>
+                </div>
+                <div class="ibox-content">
+                    <p>
+                        【snake】一个采用asp.net mvc5开发，
+                        旨在为大家提供一个可用的便捷的后台系统。
+                    </p>
+                    <div class="alert alert-info">
+                        交流群： 257326170
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>今日数据分析</h5>
+                </div>
+                <div class="ibox-content no-padding">
+                    <div class="ibox-content" style="height: 350px" id="main">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 @section scripts  {

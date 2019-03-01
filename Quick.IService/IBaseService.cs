@@ -19,6 +19,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
@@ -61,5 +62,13 @@ namespace Quick.IService
         /// <param name="searchText">搜索关键字</param>
         /// <returns>用户信息列表</returns>
         List<UserInfoOutputDto> GetPureUsers(int pageIndex, int pageSize, ref int totalCount, string searchText);
+    }
+
+    /// <summary>
+    /// snake_node业务接口
+    /// </summary>
+    public partial interface Isnake_nodeService : IBaseService<snake_node>
+    {
+
     }
 }

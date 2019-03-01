@@ -31,6 +31,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Data;
 using System.Threading.Tasks;
 using Quick.Models.Entity.Table;
 using SqlSugar;
@@ -117,6 +118,22 @@ namespace Quick.IService
         /// <param name="sql"></param>
         /// <param name="parameters"></param>
         int ExecuteSql(string sql, params SqlParameter[] parameters);
+
+		/// <summary>
+        /// 获取DataTable数据
+        /// </summary>
+        /// <param name="sql">待执行的sql语句</param>
+        /// <param name="parameters">预编译的参数</param>
+        /// <returns></returns>
+        DataTable GetDataTable(string sql,object parameters = null);
+
+		/// <summary>
+        /// 获取数据的记录数
+        /// </summary>
+        /// <param name="sql">待执行的sql语句</param>
+        /// <param name="parameters">预编译的参数</param>
+        /// <returns></returns>
+        int GetCount(string sql,object parameters = null);
 
         /// <summary>
         /// 判断实体是否在数据库中存在

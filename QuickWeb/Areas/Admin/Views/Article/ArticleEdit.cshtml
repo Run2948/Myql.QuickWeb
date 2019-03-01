@@ -1,0 +1,215 @@
+﻿@model snake_articles
+@{
+    ViewBag.Title = "编辑文章";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section styles  {
+    <link href="~/Content/admin/js/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet">
+    <link href="~/Assets/layui/2.1.4/css/layui.css" rel="stylesheet" />
+}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-10">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>编辑文章</h5>
+                </div>
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" id="commentForm" method="post" action="@Url.Action("AddArticle")">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">文章标题：</label>
+                            <div class="input-group col-sm-7">
+                                <input id="title" type="text" class="form-control" name="title" required="" aria-required="true" value="@(Model.title)">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">文章描述：</label>
+                            <div class="input-group col-sm-7">
+                                <textarea id="description" class="form-control layui-textarea" name="description" required="" aria-required="true">@(Model.description)</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">关键词：</label>
+                            <div class="input-group col-sm-7">
+                                <input id="keywords" class="form-control" name="keywords" value="@(Model.keywords)">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">缩略图：</label>
+                            <input name="thumbnail" id="thumbnail" type="hidden" value="@(Model.thumbnail)"/>
+                            <div class="form-inline">
+                                <div class="input-group col-sm-2">
+                                    <button type="button" class="layui-btn" id="test1">
+                                        <i class="layui-icon">&#xe67c;</i>上传图片
+                                    </button>
+                                </div>
+                                <div class="input-group col-sm-3">
+                                    <div id="sm">
+                                        <img src="@(Model.thumbnail)" width="40px" height="40px"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">文章内容：</label>
+                            <div class="input-group col-sm-7">
+                                <script id="container" name="content" type="text/plain">
+                                    @(Html.Raw(Model.content))
+                                </script>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-1 col-sm-offset-8">
+                                <a class="btn btn-default" href="@Url.Action("Index")">取消</a>
+                            </div>
+                            <div class="col-sm-1">
+                                @Html.AntiForgeryToken()
+                                <button class="btn btn-primary" type="submit">确认提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts  {
+    <script src="~/Content/admin/js/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
+    <script src="~/Content/admin/js/plugins/validate/jquery.validate.min.js"></script>
+    <script src="~/Content/admin/js/plugins/validate/messages_zh.min.js"></script>
+    <script src="~/Assets/layui/2.1.4/layui.js"></script>
+    <script src="~/Content/admin/js/jquery.form.js"></script>
+    <script src="~/Assets/ueditor/ueditor.config.admin.js"></script>
+    <script src="~/Assets/ueditor/ueditor.all.min.js"></script>
+    <script type="text/javascript">
+
+        var index = '';
+        function showStart() {
+            index = layer.load(0, { shade: false });
+            return true;
+        }
+
+        function showSuccess(res) {
+            layer.ready(function () {
+                layer.close(index);
+                if (1 == res.status) {
+                    layer.alert("文章编辑成功！", { title: '友情提示', icon: 1, closeBtn: 0 }, function (self) {
+                        layer.close(self);
+                        window.location.href = '@Url.Action("Index")';
+                    });
+                } else if (0 == res.status) {
+                    layer.alert(res.msg, { title: '友情提示', icon: 2 });
+                } else {
+                    window.location.reload();
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            // 添加角色
+            var options = {
+                beforeSubmit: showStart,
+                success: showSuccess
+            };
+
+            $('#commentForm').submit(function () {
+                $(this).ajaxSubmit(options);
+                return false;
+            });
+
+            $('#keywords').tagsinput('add', 'some tag');
+            $(".bootstrap-tagsinput").addClass('col-sm-12').find('input').addClass('form-control')
+                .attr('placeholder', '输入后按enter');
+
+            // 上传图片
+            layui.use('upload', function () {
+                var upload = layui.upload;
+                //执行实例
+                var uploadInst = upload.render({
+                    elem: '#test1' //绑定元素 指向容器选择器，如：elem: '#id'。也可以是DOM对象
+                    , url: "@Url.Action("Upload","Public",new { area = "" })" //服务端上传接口
+                    , method: 'post'  //可选项。HTTP类型，默认post
+                    , data: { folderName : 'articles' }
+                    , accept: 'images' //指定允许上传时校验的文件类型，可选值有：images（图片）、file（所有文件）、video（视频）、audio（音频）
+                    //, size: 1024 * 40 //设置文件最大可允许上传的大小，单位 KB。不支持ie8/9
+                    //, exts: '' // 允许上传的文件后缀。一般结合 accept 参数类设定。假设 accept 为 file 类型时，那么你设置 exts: 'zip|rar|7z' 即代表只允许上传压缩格式的文件。如果 accept 未设定，那么限制的就是图片的文件格式:jpg|png|gif|bmp|jpeg
+                    , multiple: false    //是否允许多文件上传。设置 true即可开启。不支持ie8/9
+                    , drag: true //是否接受拖拽的文件上传，设置 false 可禁用。不支持ie8/9
+                    , auto: true //是否选完文件后自动上传。如果设定 false，那么需要设置 bindAction 参数来指向一个其它按钮提交上传
+                    , choose: function (obj) { // 选择文件后的回调函数。返回一个object参数
+                        //将每次选择的文件追加到文件队列
+                        //var files = obj.pushFile();
+                        var html = "";
+                        //预读本地文件，如果是多文件，则会遍历。(不支持ie8/9)
+                        obj.preview(function (index, file, result) {
+                            //console.log(index); //得到文件索引
+                            //console.log(file); //得到文件对象
+                            //console.log(result); //得到文件base64编码，比如图片
+
+                            //obj.resetFile(index, file, '123.jpg'); //重命名文件名，layui 2.3.0 开始新增
+
+                            //这里还可以做一些 append 文件列表 DOM 的操作
+                            //obj.upload(index, file); //对上传失败的单个文件重新上传，一般在某个事件中使用
+                            //delete files[index]; //删除列表中对应的文件，一般在某个事件中使用
+
+                            //$('#preview-box').empty();
+                            ////console.log(file);
+                            //if ((file.type).indexOf("image/") == -1) {
+                            //    html = '<div style="color: red;text-align:center;"><i class="layui-icon" style="font-size:110px!important;">&#xe63c;</i><h5>' + 未识别的图片格式 + '</h5></div>';
+                            //} else {
+                            //    html = '<img src="' + result + '" height="100" />';
+                            //}
+                            //$('#preview-box').append(html);
+                        });
+                    }
+                    , before: function () { // 文件提交上传前的回调。返回一个object参数
+                        layer.load(); //上传loading
+                    }
+                    , done: function (res, index, upload) { // 执行上传请求后的回调。返回三个参数，分别为：res（服务端响应信息）、index（当前文件的索引）、upload（重新上传的方法，一般在文件上传失败后使用）。
+                        layer.closeAll('loading'); //关闭loading
+                        if (res.status == 1) {
+                            //上传完毕回调
+                            $("#thumbnail").val(res.data.src);
+                            $("#sm").html('<img src="' + res.data.src + '" style="width:40px;height: 40px;"/>');
+                        } else {
+                            $("#sm").empty();
+                            layer.msg(res.msg);
+                        }
+                    }
+                    , error: function (index, upload) { // 执行上传请求出现异常的回调（一般为网络异常、URL 404等）。返回两个参数，分别为：index（当前文件的索引）、upload（重新上传的方法）。
+                        //console.log(upload);
+                        layer.closeAll('loading'); //关闭loading
+
+                        //重新上传的方法，一般在某个事件中使用
+                        //uploadInst.upload();
+                    }
+                });
+            });
+
+            var editor = UE.getEditor('container',{
+                autoHeight: true
+            });
+        });
+
+        // 表单验证
+        $.validator.setDefaults({
+            highlight: function (e) {
+                $(e).closest(".form-group").removeClass("has-success").addClass("has-error");
+            },
+            success: function (e) {
+                e.closest(".form-group").removeClass("has-error").addClass("has-success");
+            },
+            errorElement: "span",
+            errorPlacement: function (e, r) {
+                e.appendTo(r.is(":radio") || r.is(":checkbox") ? r.parent().parent().parent() : r.parent());
+            },
+            errorClass: "help-block m-b-none",
+            validClass: "help-block m-b-none"
+        });
+    </script>
+}
+

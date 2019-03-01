@@ -1,5 +1,6 @@
 ﻿{
     "salt": "123456",
+    "back_path": "/upload/data/backup", 
     "user_status": [
         "1-正常",
         "2-禁用"

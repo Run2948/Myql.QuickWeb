@@ -1,7 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Index";
-    ViewBag.GlobalStyle = "animated fadeInRight";
+    ViewBag.Title = "管理员列表";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
@@ -9,65 +8,64 @@
     <link href="~/Content/admin/css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
 }
 
-<!-- Panel Other -->
-<div class="ibox float-e-margins">
-    <div class="ibox-title">
-        <h5>管理员列表</h5>
-    </div>
-    <div class="ibox-content">
-        <div class="form-group clearfix col-sm-1">
-            @*{if authCheck('user/useradd') }*@
-            <a href="@Url.Action("UserAdd","User",new { area = "Admin"})">
-                <button class="btn btn-outline btn-primary" type="button">添加管理员</button>
-            </a>
-            @*{/if}*@
+<div class="wrapper wrapper-content animated fadeInRight">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>管理员列表</h5>
         </div>
-        <!--搜索框开始-->
-        <form id='commentForm' role="form" method="post" class="form-inline pull-right">
-            <div class="content clearfix m-b">
-                <div class="form-group">
-                    <label>管理员名称：</label>
-                    <input type="text" class="form-control" id="username" name="user_name">
+        <div class="ibox-content">
+            <div class="form-group clearfix col-sm-1">
+                @*{if authCheck('user/useradd') }*@
+                <a href="@Url.Action("UserAdd")"  class="btn btn-outline btn-primary">添加管理员</a>
+                @*{/if}*@
+            </div>
+            <!--搜索框开始-->
+            <form id='commentForm' role="form" method="post" class="form-inline pull-right">
+                <div class="content clearfix m-b">
+                    <div class="form-group">
+                        <label>管理员名称：</label>
+                        <input type="text" class="form-control" id="username" name="user_name">
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary" type="button" style="margin-top:5px" id="search">
+                            <strong>搜 索</strong>
+                        </button>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <button class="btn btn-primary" type="button" style="margin-top:5px" id="search">
-                        <strong>搜 索</strong>
-                    </button>
+            </form>
+            <!--搜索框结束-->
+            <div class="example-wrap">
+                <div class="example">
+                    <table id="cusTable">
+                        <thead>
+                            <tr>
+                                <th data-field="id">管理员ID</th>
+                                <th data-field="user_name">管理员名称</th>
+                                <th data-field="role_name">管理员角色</th>
+                                <th data-field="login_times">登录次数</th>
+                                <th data-field="last_login_ip">上次登录ip</th>
+                                <th data-field="last_login_time">上次登录时间</th>
+                                <th data-field="real_name">真实姓名</th>
+                                <th data-field="status">状态</th>
+                                <th data-field="operate">操作</th>
+                            </tr>
+                        </thead>
+                    </table>
                 </div>
             </div>
-        </form>
-        <!--搜索框结束-->
-        <div class="example-wrap">
-            <div class="example">
-                <table id="cusTable">
-                    <thead>
-                        <tr>
-                            <th data-field="id">管理员ID</th>
-                            <th data-field="user_name">管理员名称</th>
-                            <th data-field="role_name">管理员角色</th>
-                            <th data-field="login_times">登录次数</th>
-                            <th data-field="last_login_ip">上次登录ip</th>
-                            <th data-field="last_login_time">上次登录时间</th>
-                            <th data-field="real_name">真实姓名</th>
-                            <th data-field="status">状态</th>
-                            <th data-field="operate">操作</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
+            <!-- End Example Pagination -->
         </div>
-        <!-- End Example Pagination -->
     </div>
+    <!-- End Panel Other -->
 </div>
-<!-- End Panel Other -->
 
 @section scripts {
     <script src="~/Content/admin/js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
     <script src="~/Content/admin/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
     <script src="~/Content/admin/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
     <script src="~/Content/admin/js/plugins/suggest/bootstrap-suggest.min.js"></script>
-    <script src="~/Content/admin/js/plugins/layer/laydate/laydate.js"></script>
-    <script src="~/Content/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="~/Assets/layer/layer.min.js"></script>
     <script type="text/javascript">
     function initTable() {
         //先销毁表格
@@ -138,8 +136,8 @@
                     formatter: function (value, row, index) {
                         if(row.id == 1)
                             return "-";
-                        return '<a href="@(Url.Action("UserEdit","User"))/'+ row.id +'"><button type="button" class="btn btn-primary btn-sm"><i class="fa fa-paste"></i> 编辑</button></a> '+
-                            ' <a href="javascript:userDel('+ row.id +')"><button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> 删除</button></a>';
+                        return '<a href="@(Url.Action("UserEdit"))/'+ row.id +'" class="btn btn-primary btn-sm"><i class="fa fa-paste"></i> 编辑</a> '+
+                            ' <a href="javascript:userDel('+ row.id +')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> 删除</a>';
                     }
                 }]
         });
@@ -156,7 +154,7 @@
     function userDel(id){
         var index = layer.confirm('确认删除此管理员?', {icon: 3, title:'提示'}, function(){
             //do something
-            $.post("@Url.Action("UserDel","User")", {'id' : id}, function(res){
+            $.post("@Url.Action("UserDel")", {'id' : id}, function(res){
                 layer.close(index);
                 if(1 == res.status){
                     layer.alert("数据删除成功！", { title: '友情提示', icon: 1, closeBtn: 0 }, function (self){

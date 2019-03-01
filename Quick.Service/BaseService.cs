@@ -19,6 +19,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
@@ -96,5 +97,13 @@ namespace Quick.Service
                 .ToPageList(pageIndex, pageSize, ref totalCount);
             return list;
         }
+    }
+
+    /// <summary>
+    /// snake_node业务类
+    /// </summary>
+    public partial class snake_nodeService : BaseService<snake_node>, Isnake_nodeService
+    {
+
     }
 }

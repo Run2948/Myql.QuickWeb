@@ -44,14 +44,16 @@
                                 </span>
                             </a>
                             <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                @*{if authCheck('profile/headedit')}*@
                                 <li>
-                                    <a class="J_menuItem" href="@Url.Action("Head","Profile",new { area = "Admin"})">修改信息</a>
+                                    <a class="J_menuItem" href="@Url.Action("Index","Profile",new { area = "Admin"})">修改信息</a>
+                                </li>
+                                @*{/if}*@
+                                <li>
+                                    <a class="J_menuItem" href="@Url.Action("PwdEdit","Profile",new { area = "Admin"})">修改密码</a>
                                 </li>
                                 <li>
-                                    <a class="J_menuItem" href="@Url.Action("Index","Profile",new { area = "Admin"})">修改密码</a>
-                                </li>
-                                <li>
-                                    <a href="@Url.Action("Index","UserLogout",new { area = ""})">安全退出</a>
+                                    <a class="J_menuItem" href="@Url.Action("Index","UserLogout",new { area = ""})">安全退出</a>
                                 </li>
                             </ul>
                         </div>
@@ -59,9 +61,9 @@
                             Snake
                         </div>
                     </li>
-                    @if(menus != null && menus.Any())
+                    @if (menus != null && menus.Any())
                     {
-                        foreach (var m0 in menus.Where(l=> l.is_menu == 2 && l.type_id == 0))
+                        foreach (var m0 in menus.Where(l => l.is_menu == 2 && l.type_id == 0))
                         {
                             <li class="menu">
                                 <a href="javascript:;">
@@ -70,7 +72,7 @@
                                     <span class="fa arrow"></span>
                                 </a>
                                 <ul class="nav nav-second-level">
-                                    @foreach(var m1 in menus.Where(l => l.is_menu == 2 && l.type_id == m0.id))
+                                    @foreach (var m1 in menus.Where(l => l.is_menu == 2 && l.type_id == m0.id))
                                     {
                                         <li>
                                             <a class="J_menuItem" href="Admin/@(m1.control_name)/@(m1.action_name)">@(m1.node_name)</a>
@@ -116,7 +118,7 @@
                 </button>
                 <div class="btn-group roll-nav roll-right">
                     <button class="dropdown J_tabClose" data-toggle="dropdown">
-                        常用操作<span class="caret"></span>
+                        常用操作 <span class="caret"></span>
                     </button>
                     <ul role="menu" class="dropdown-menu dropdown-menu-right">
                         <li class="J_tabGo">
@@ -151,7 +153,7 @@
             </div>
             <div class="footer">
                 <div class="" style="text-align:center;">
-                   武汉一世计科软件有限公司 &copy; @(DateTime.Now.Year - 2)-@(DateTime.Now.Year) <a href="http://www.borun.com" target="_blank">www.borun.com</a>
+                    武汉一世计科软件有限公司 &copy; @(DateTime.Now.Year - 2)-@(DateTime.Now.Year) <a href="http://www.borun.com" target="_blank">www.borun.com</a>
                 </div>
             </div>
         </div>
@@ -247,11 +249,18 @@
     <script src="~/Content/admin/js/bootstrap.min.js?v=3.3.6"></script>
     <script src="~/Content/admin/js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="~/Content/admin/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-    <script src="~/Content/admin/js/plugins/layer/layer.min.js"></script>
+    <script src="~/Assets/layer/layer.min.js"></script>
     <script src="~/Content/admin/js/hplus.min.js?v=4.1.0"></script>
     <!--<script type="text/javascript" src="~/Content/admin/js/contabs.min.js"></script>-->
     <script type="text/javascript" src="~/Content/admin/js/contabs.js"></script>
     <script src="~/Content/admin/js/plugins/pace/pace.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $(".J_menuItem").click(function () {
+                $(".profile-element").removeClass("open");
+            });
+        });
+    </script>
 </body>
 </html>
 

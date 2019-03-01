@@ -233,8 +233,7 @@ namespace QuickWeb.Controllers.Common
                     if (fileExt == ".jpg" || fileExt == ".gif" || fileExt == ".png" || fileExt == ".ico" || fileExt == "jpeg")  // 格式过滤
                     {
                         string dir = "/upload/images/" + folderName + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("yyyyMM") + "/" + DateTime.Now.ToString("yyyyMMdd") + "/";
-                        if (!Directory.Exists(Request.MapPath(dir)))
-                            Directory.CreateDirectory(Request.MapPath(dir));
+                        DirectoryCreates(Request.MapPath(dir));
                         string imagePath = dir + Guid.NewGuid().ToString() + fileExt;  //全球唯一标示符，作为文件名
                         file.SaveAs(Request.MapPath(imagePath));
                         var pic = Image.FromFile(Request.MapPath(imagePath));
@@ -285,8 +284,7 @@ namespace QuickWeb.Controllers.Common
                     if (fileExt == ".jpg" || fileExt == ".gif" || fileExt == ".png" || fileExt == ".ico" || fileExt == "jpeg")  // 格式过滤
                     {
                         string dir = "/upload/images/" + folderName + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("yyyyMM") + "/" + DateTime.Now.ToString("yyyyMMdd") + "/";
-                        if (!Directory.Exists(Request.MapPath(dir)))
-                            Directory.CreateDirectory(Request.MapPath(dir));
+                        DirectoryCreates(Request.MapPath(dir));
                         string imagePath = dir + Guid.NewGuid().ToString() + fileExt;  //全球唯一标示符，作为文件名
                         file.SaveAs(Request.MapPath(imagePath));
                         var pic = Image.FromFile(Request.MapPath(imagePath));
@@ -339,8 +337,7 @@ namespace QuickWeb.Controllers.Common
                     if (fileExt == ".jpg" || fileExt == ".gif" || fileExt == ".png" || fileExt == ".ico" || fileExt == "jpeg")  // 格式过滤
                     {
                         string dir = "/upload/images/" + folderName + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("yyyyMM") + "/" + DateTime.Now.ToString("yyyyMMdd") + "/";
-                        if (!Directory.Exists(Request.MapPath(dir)))
-                            Directory.CreateDirectory(Request.MapPath(dir));
+                        DirectoryCreates(Request.MapPath(dir));
                         string imagePath = dir + Guid.NewGuid().ToString() + fileExt;  //全球唯一标示符，作为文件名
                         file.SaveAs(Request.MapPath(imagePath));
                         var pic = Image.FromFile(Request.MapPath(imagePath));
@@ -399,8 +396,7 @@ namespace QuickWeb.Controllers.Common
                     if (fileExt == ".jpg" || fileExt == ".gif" || fileExt == ".png" || fileExt == ".ico" || fileExt == "jpeg")  // 格式过滤
                     {
                         string dir = "/upload/images/" + folderName + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("yyyyMM") + "/" + DateTime.Now.ToString("yyyyMMdd") + "/";
-                        if (!Directory.Exists(Request.MapPath(dir)))
-                            Directory.CreateDirectory(Request.MapPath(dir));
+                        DirectoryCreates(Request.MapPath(dir));
                         string imagePath = dir + Guid.NewGuid().ToString() + fileExt;  //全球唯一标示符，作为文件名
                         file.SaveAs(Request.MapPath(imagePath));
                         var pic = Image.FromFile(Request.MapPath(imagePath));
@@ -458,8 +454,7 @@ namespace QuickWeb.Controllers.Common
             try
             {
                 string dir = "/upload/images/" + folderName + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("yyyyMM") + "/" + DateTime.Now.ToString("yyyyMMdd") + "/";
-                if (!Directory.Exists(HttpContext.Request.MapPath(dir)))
-                    Directory.CreateDirectory(HttpContext.Request.MapPath(dir));
+                DirectoryCreates(HttpContext.Request.MapPath(dir));
                 string imagePath = dir + Guid.NewGuid() + fileExt;  //全球唯一标示符，作为文件名
                 file.SaveAs(HttpContext.Request.MapPath(imagePath));
                 var pic = Image.FromFile(HttpContext.Request.MapPath(imagePath));
@@ -499,8 +494,7 @@ namespace QuickWeb.Controllers.Common
             try
             {
                 string dir = "/upload/images/" + folderName + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("yyyyMM") + "/" + DateTime.Now.ToString("yyyyMMdd") + "/";
-                if (!Directory.Exists(HttpContext.Request.MapPath(dir)))
-                    Directory.CreateDirectory(HttpContext.Request.MapPath(dir));
+                DirectoryCreates(HttpContext.Request.MapPath(dir));
                 string imagePath = dir + Guid.NewGuid() + fileExt;  //全球唯一标示符，作为文件名
                 file.SaveAs(HttpContext.Request.MapPath(imagePath));
                 var pic = Image.FromFile(HttpContext.Request.MapPath(imagePath));
@@ -555,14 +549,68 @@ namespace QuickWeb.Controllers.Common
         }
 
         /// <summary>
-        /// 图片上传并裁剪(xywh为裁剪的矩形区域)
+        /// 图片上传并裁剪(x y w h为裁剪的矩形区域)
         /// </summary>
-        /// <param name="fileType">上传图片类型</param>
+        /// <param name="folder">如：~/upload/images/teachers/...，则直接填写 teachers</param>
         /// <param name="url">已经上传的图片的相对路径</param>
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <param name="w"></param>
         /// <param name="h"></param>
+        /// <returns></returns>
+        public (bool, string) PreCutAndSaveImage(string folder,string url, int x, int y, int w, int h)
+        {
+            if (System.IO.File.Exists(Server.MapPath(url)))
+            {
+                try
+                {
+                    FileInfo fileInfo = new FileInfo(Server.MapPath(url));
+                    string dir = "/upload/images/" + folder + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("yyyyMM") + "/" + DateTime.Now.ToString("yyyyMMdd") + "/";
+                    DirectoryCreates(dir);
+                    string path = dir + Guid.NewGuid().ToString()  + fileInfo.Extension;
+                    Bitmap oladImageBitmap = new Bitmap(Server.MapPath(url));
+                    // Bitmap resizeImage=ImageOperation.ResizeImage(image,500,)
+                    //   x:
+                    //     矩形左上角的 x 坐标。
+                    //
+                    //   y:
+                    //     矩形左上角的 y 坐标。
+                    //
+                    //   width:
+                    //     矩形的宽度。
+                    //
+                    //   height:
+                    //     矩形的高度。
+                    Bitmap tempImageBitmap = oladImageBitmap.CutImage(new Rectangle(x, y, w, h));
+                    //  image.Dispose();
+                    if (tempImageBitmap != null)
+                    {
+                        tempImageBitmap.Save(Server.MapPath(path));
+                        //释放资源
+                        tempImageBitmap.Dispose();
+                        oladImageBitmap.Dispose();
+                        //删除临时文件
+                        System.IO.File.Delete(Server.MapPath(url));
+                        return (true, path);
+                    }
+                }
+                catch (Exception e)
+                {
+                    return (false, e.Message);
+                }
+            }
+            return (false, "上传路径不存在！");
+        }
+
+        /// <summary>
+        /// 图片上传并裁剪(x y w h为裁剪的矩形区域)
+        /// </summary>
+        /// <param name="fileType">上传图片类型</param>
+        /// <param name="url">已经上传的图片的相对路径</param>
+        /// <param name="x">矩形左上角的 x 坐标</param>
+        /// <param name="y">矩形左上角的 y 坐标</param>
+        /// <param name="w">矩形的宽度</param>
+        /// <param name="h">矩形的高度</param>
         /// <returns></returns>
         public (bool, string) SaveImagePicWithCutPro(FileType fileType, string url, int x, int y, int w, int h)
         {
@@ -574,6 +622,21 @@ namespace QuickWeb.Controllers.Common
                     string path = CreateNewFile(fileType) + fileInfo.Extension;
                     Bitmap oladImageBitmap = new Bitmap(Server.MapPath(url));
                     // Bitmap resizeImage=ImageOperation.ResizeImage(image,500,)
+                    // 摘要:
+                    //     用指定的位置和大小初始化 System.Drawing.Rectangle 类的新实例。
+                    //
+                    // 参数:
+                    //   x:
+                    //     矩形左上角的 x 坐标。
+                    //
+                    //   y:
+                    //     矩形左上角的 y 坐标。
+                    //
+                    //   width:
+                    //     矩形的宽度。
+                    //
+                    //   height:
+                    //     矩形的高度。
                     Bitmap tempImageBitmap = oladImageBitmap.CutImage(new Rectangle(x, y, w, h));
                     //  image.Dispose();
                     if (tempImageBitmap != null)
@@ -622,8 +685,7 @@ namespace QuickWeb.Controllers.Common
             try
             {
                 string dir = "/upload/images/" + folderName + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("yyyyMM") + "/" + DateTime.Now.ToString("yyyyMMdd") + "/";
-                if (!Directory.Exists(HttpContext.Request.MapPath(dir)))
-                    Directory.CreateDirectory(HttpContext.Request.MapPath(dir));
+                DirectoryCreates(HttpContext.Request.MapPath(dir));
                 string imagePath = dir + Guid.NewGuid() + fileExt;  //全球唯一标示符，作为文件名
                 byte[] dataOne = new byte[stream.Length];
                 stream.Read(dataOne, 0, dataOne.Length);
@@ -665,8 +727,7 @@ namespace QuickWeb.Controllers.Common
             try
             {
                 string dir = "/upload/images/" + folderName + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("yyyyMM") + "/" + DateTime.Now.ToString("yyyyMMdd") + "/";
-                if (!Directory.Exists(HttpContext.Request.MapPath(dir)))
-                    Directory.CreateDirectory(HttpContext.Request.MapPath(dir));
+                DirectoryCreates(HttpContext.Request.MapPath(dir));
                 string imagePath = dir + Guid.NewGuid() + fileExt;  //全球唯一标示符，作为文件名
                 byte[] dataOne = new byte[stream.Length];
                 stream.Read(dataOne, 0, dataOne.Length);
@@ -685,6 +746,37 @@ namespace QuickWeb.Controllers.Common
         #endregion
 
         #region 通用文件上传
+
+        /// <summary>
+        /// 通用文件上传
+        /// </summary>
+        /// <param name="fileInput">file表单参数名</param>
+        /// <param name="folderName">上传文件夹</param>
+        /// <returns></returns>
+        public (bool,string) PreFileUpload(string fileInput, string folderName)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(fileInput))
+                    fileInput = "file";
+                if (string.IsNullOrEmpty(folderName))
+                    folderName = "images";
+                HttpPostedFileBase file = Request.Files[fileInput];
+                if (file == null)
+                    return (false,"上传图片为空！请勿非法提交");
+                string fileName = file.FileName;
+                if (string.IsNullOrEmpty(file.ContentType) || (file.ContentType).IndexOf("image/", StringComparison.Ordinal) == -1)
+                {
+                    return (false,"未识别的图片格式！请勿非法提交");
+                }
+                var result = FileUploadPro(file, folderName);
+                return result;
+            }
+            catch (Exception e)
+            {
+                return (false,e.Message);
+            }
+        }
 
         /// <summary>
         /// 通用文件上传
@@ -714,8 +806,7 @@ namespace QuickWeb.Controllers.Common
             try
             {
                 string dir = "/upload/" + folderName + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("yyyyMM") + "/" + DateTime.Now.ToString("yyyyMMdd") + "/";
-                if (!Directory.Exists(HttpContext.Request.MapPath(dir)))
-                    Directory.CreateDirectory(HttpContext.Request.MapPath(dir));
+                DirectoryCreates(HttpContext.Request.MapPath(dir));
                 string filePath = dir + Guid.NewGuid() + fileExt; //全球唯一标示符，作为文件名 
                 file.SaveAs(HttpContext.Request.MapPath(filePath));
                 return "ok:" + filePath;  // 上传成功，返回全路径  
@@ -753,8 +844,7 @@ namespace QuickWeb.Controllers.Common
             try
             {
                 string dir = "/upload/" + folderName + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("yyyyMM") + "/" + DateTime.Now.ToString("yyyyMMdd") + "/";
-                if (!Directory.Exists(HttpContext.Request.MapPath(dir)))
-                    Directory.CreateDirectory(HttpContext.Request.MapPath(dir));
+                DirectoryCreates(HttpContext.Request.MapPath(dir));
                 string filePath = dir + Guid.NewGuid() + fileExt; //全球唯一标示符，作为文件名 
                 file.SaveAs(HttpContext.Request.MapPath(filePath));
                 return (true, filePath);  // 上传成功，返回全路径  
@@ -1030,7 +1120,14 @@ namespace QuickWeb.Controllers.Common
         /// <param name="dirPath"></param>
         /// <returns></returns>
         protected bool DirectoryExists(string dirPath) => System.IO.Directory.Exists(dirPath);
-
+        /// <summary>
+        /// 文件夹创建(绝对路径)
+        /// </summary>
+        /// <param name="dirPath"></param>
+        protected void DirectoryCreates(string dirPath)
+        {
+            if(!DirectoryExists(dirPath)) System.IO.Directory.CreateDirectory(dirPath);
+        } 
         #endregion
 
         #region 分页计算总页数
