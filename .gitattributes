@@ -3,8 +3,8 @@
 ###############################################################################
 * text=auto
 *.html linguist-language=csharp 
-*.html linguist-language=csharp 
-*.html linguist-language=csharp
+*.css linguist-language=csharp 
+*.js linguist-language=csharp
 
 ###############################################################################
 # Set default behavior for command prompt diff.
