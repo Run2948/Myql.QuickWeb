@@ -1,4 +1,4 @@
-﻿namespace Quick.Models.Common
+﻿namespace Quick.Common.Models
 {
     public class ResultInfo
     {

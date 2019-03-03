@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Quick.Models.Common;
+using Quick.Common.Models;
 
 namespace QuickWeb.Models.RequestModel
 {

@@ -24,7 +24,7 @@ namespace QuickWeb.Controllers
         {
             try
             {
-                var result = PreFileUpload(fileInput, folderName);
+                var result = FileUpload(fileInput, folderName);
                 return !result.Item1 ? No(result.Item2) : Ok(new { src = result.Item2 });
             }
             catch (Exception e)

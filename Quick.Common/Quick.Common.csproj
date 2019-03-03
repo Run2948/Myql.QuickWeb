@@ -61,8 +61,8 @@
     <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.105.2.3\lib\net46\RestSharp.dll</HintPath>
     </Reference>
-    <Reference Include="SharpCompress, Version=0.22.0.0, Culture=neutral, PublicKeyToken=afb0a02973931d96, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpCompress.0.22.0\lib\net45\SharpCompress.dll</HintPath>
+    <Reference Include="SharpCompress, Version=0.23.0.0, Culture=neutral, PublicKeyToken=afb0a02973931d96, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpCompress.0.23.0\lib\net45\SharpCompress.dll</HintPath>
     </Reference>
     <Reference Include="SqlSugar, Version=4.9.9.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\sqlSugar.4.9.9.1\lib\SqlSugar.dll</HintPath>
@@ -96,14 +96,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assemblies.cs" />
-    <Compile Include="Jsons\JsonConfig.cs" />
+    <Compile Include="JsonConfig.cs" />
     <Compile Include="Images\ImageUtils.cs" />
     <Compile Include="CommonHelper.cs" />
     <Compile Include="Docs\DocumentConvert.cs" />
-    <Compile Include="Strings\DrawingSecurityCode.cs" />
+    <Compile Include="Models\BsTableInfo.cs" />
+    <Compile Include="Models\PageRequest.cs" />
+    <Compile Include="Models\ResultInfo.cs" />
+    <Compile Include="Security\DrawingSecurityCode.cs" />
     <Compile Include="Extension\ModelStateExtension.cs" />
     <Compile Include="HangfireHelper.cs" />
-    <Compile Include="Jsons\JsonHelper.cs" />
+    <Compile Include="Strings\JsonHelper.cs" />
     <Compile Include="L2Cache\HttpRuntimeCache.cs" />
     <Compile Include="L2Cache\RedisCache.cs" />
     <Compile Include="Models\JsonNetResult.cs" />

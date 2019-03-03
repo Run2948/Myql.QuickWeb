@@ -60,10 +60,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\BsTableInfo.cs" />
-    <Compile Include="Common\PageRequest.cs" />
-    <Compile Include="Common\ResultInfo.cs" />
-    <Compile Include="Common\SessionKey.cs" />
     <Compile Include="Dto\BaseDto.cs" />
     <Compile Include="Dto\UserInfoOutputDto.cs" />
     <Compile Include="Entity\Table\snake_article.cs" />

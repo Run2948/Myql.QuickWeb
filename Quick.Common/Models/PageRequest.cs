@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Quick.Models.Common
+namespace Quick.Common.Models
 {
     [Serializable]
     public class PageRequest

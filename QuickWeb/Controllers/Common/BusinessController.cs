@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Quick.Common;
-using Quick.Models.Common;
+using Quick.Common.Models;
 
 namespace QuickWeb.Controllers.Common
 {

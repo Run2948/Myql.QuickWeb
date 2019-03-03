@@ -95,7 +95,7 @@ namespace QuickWeb.Areas.Admin.Controllers
         [CustomAllowed]
         public ActionResult UploadHead()
         {
-            var result = PreFileUpload("img", "images/avatars");
+            var result = ImageUpload("img", "images/avatars");
             if (!result.Item1)
                 return Json(new { status = "error", message = result.Item2 }, JsonRequestBehavior.AllowGet);
             var image = Image.FromFile(Request.MapPath(result.Item2));
@@ -136,7 +136,7 @@ namespace QuickWeb.Areas.Admin.Controllers
                 }, JsonRequestBehavior.AllowGet);
             int x = (int)(imgX1 - (imgW - imgInitW) / 2);
             int y = (int)(imgY1 - (imgH - imgInitH) / 2);
-            var result = PreCutAndSaveImage("avatars", imgUrl, x, y, (int)cropW, (int)cropH);
+            var result = SaveImagePicWithCutPro("avatars", imgUrl, x, y, (int)cropW, (int)cropH);
             return !result.Item1
                 ? Json(new
                 {
@@ -149,6 +149,7 @@ namespace QuickWeb.Areas.Admin.Controllers
                 url = result.Item2
             }, JsonRequestBehavior.AllowGet);
         }
+        
         #endregion
     }
 }
