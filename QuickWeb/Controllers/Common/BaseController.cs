@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Masuit.Tools.Media;
+using Quick.Common.Net.Mime;
+using Quick.Models.Common;
+using System;
 using System.Configuration;
 using System.Drawing;
 using System.IO;
@@ -6,10 +9,6 @@ using System.Net;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
-using Masuit.Tools;
-using Masuit.Tools.Media;
-using Quick.Models.Common;
-using Quick.Models.Enum;
 
 namespace QuickWeb.Controllers.Common
 {
@@ -48,22 +47,14 @@ namespace QuickWeb.Controllers.Common
         /// <param name="contentType">内容的类型</param>
         /// <param name="get">是否允许GET请求</param>
         /// <returns></returns>
-        protected static JsonResult Build(int status, string msg, ContentType contentType = ContentType.Json, bool get = false)
+        protected static JsonResult Build(int status, string msg, string contentType = ContentType.Json, bool get = false)
         {
             var js = new JsonResult
             {
                 Data = new ResultInfo(status, msg)
             };
-            switch (contentType)
-            {
-                case ContentType.Json:
-                    break;
-                case ContentType.Text:
-                    js.ContentType = "text/html";
-                    break;
-                default:
-                    break;
-            }
+            if(contentType != ContentType.Json)
+                js.ContentType = contentType;
             if (get)
                 js.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
             return js;
@@ -78,22 +69,14 @@ namespace QuickWeb.Controllers.Common
         /// <param name="contentType">内容的类型</param>
         /// <param name="get">是否允许GET请求</param>
         /// <returns></returns>
-        protected static JsonResult Build(int status, string msg, object data, ContentType contentType = ContentType.Json, bool get = false)
+        protected static JsonResult Build(int status, string msg, object data, string contentType = ContentType.Json, bool get = false)
         {
             var js = new JsonResult
             {
                 Data = new ResultInfo(status, msg, data)
             };
-            switch (contentType)
-            {
-                case ContentType.Json:
-                    break;
-                case ContentType.Text:
-                    js.ContentType = "text/html";
-                    break;
-                default:
-                    break;
-            }
+            if(contentType != ContentType.Json)
+                js.ContentType = contentType;
             if (get)
                 js.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
             return js;
@@ -106,22 +89,14 @@ namespace QuickWeb.Controllers.Common
         /// <param name="contentType">内容的类型</param>
         /// <param name="get">是否允许GET请求</param>
         /// <returns></returns>
-        protected static JsonResult Build(ResultInfo result, ContentType contentType = ContentType.Json, bool get = false)
+        protected static JsonResult Build(ResultInfo result, string contentType = ContentType.Json, bool get = false)
         {
             var js = new JsonResult
             {
                 Data = new ResultInfo(result.Status, result.Msg, result.Data)
             };
-            switch (contentType)
-            {
-                case ContentType.Json:
-                    break;
-                case ContentType.Text:
-                    js.ContentType = "text/html";
-                    break;
-                default:
-                    break;
-            }
+            if(contentType != ContentType.Json)
+                js.ContentType = contentType;
             if (get)
                 js.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
             return js;
@@ -185,6 +160,7 @@ namespace QuickWeb.Controllers.Common
         {
             return No("Failure ");
         }
+        
         #endregion
 
         #region 通用返回ResultInfo的封装
@@ -208,54 +184,76 @@ namespace QuickWeb.Controllers.Common
         #region 通用图片上传
 
         /// <summary>
-        /// 图片上传，对图片的大小有限制
+        /// 通用图片上传
+        /// </summary>
+        /// <param name="fileInput">file表单参数名</param>
+        /// <param name="folderName">上传目录的名称，如：~/upload/images/teachers/...，则直接填写 teachers</param>
+        /// <returns></returns>
+        public (bool, string) ImageUpload(string fileInput, string folderName)
+        {
+            HttpContext.Request.ContentEncoding = Encoding.GetEncoding("UTF-8");
+            HttpContext.Response.ContentEncoding = Encoding.GetEncoding("UTF-8");
+            HttpContext.Response.Charset = "UTF-8";
+            try
+            {
+                if (string.IsNullOrEmpty(fileInput))
+                    fileInput = "file";
+                if (string.IsNullOrEmpty(folderName))
+                    folderName = "files";
+                HttpPostedFileBase file = Request.Files[fileInput];
+                if (file == null)
+                    return (false,"上传文件为空！请勿非法提交");
+                if (string.IsNullOrEmpty(file.ContentType) || (file.ContentType).IndexOf("image/", StringComparison.Ordinal) == -1)
+                {
+                    return (false,"未识别的文件格式！请勿非法提交");
+                }
+                var result = ImageUploadPro(file, folderName);
+                return result;
+            }
+            catch (Exception e)
+            {
+                return (false,e.Message);
+            }
+
+        }
+
+        /// <summary>
+        /// 通用图片上传
         /// </summary>
         /// <param name="file">待上传的文件</param>
         /// <param name="folderName">上传目录的名称，如：~/upload/images/teachers/...，则直接填写 teachers</param>
-        /// <param name="width">图片宽度限制</param>
-        /// <param name="height">图片高度限制</param>
         /// <returns></returns>
-        public string ImageUpload(HttpPostedFileBase file, string folderName, int width, int height)
+        public (bool, string) ImageUploadPro(HttpPostedFileBase file, string folderName)
         {
             HttpContext.Request.ContentEncoding = Encoding.GetEncoding("UTF-8");
             HttpContext.Response.ContentEncoding = Encoding.GetEncoding("UTF-8");
             HttpContext.Response.Charset = "UTF-8";
             if (file == null)
+                return (false, "上传图片文件不能为空!");
+
+            string fileName = Path.GetFileName(file.FileName); //文件名
+            string fileExt = Path.GetExtension(fileName);  //文件后缀名
+
+            if (fileExt == null)
+                return (false, "无法识别的图片格式!!");
+
+            fileExt = fileExt.ToLower();
+            if (!".jpg".Equals(fileExt) && !".gif".Equals(fileExt) && !".png".Equals(fileExt) && !".ico".Equals(fileExt) && !"jpeg".Equals(fileExt))
+                return (false, "上传文件格式错误!!支持后缀为.jpg、.jpeg、png、.gif、.ico格式的图片上传");
+
+            try
             {
-                return "no:上传图片文件不能为空!";
+                var dir = $"/upload/images/{folderName}/{DateTime.Now:yyyy}/{DateTime.Now:yyyyMM}/{DateTime.Now:yyyyMMdd}/";
+                DirectoryCreates(HttpContext.Request.MapPath(dir));
+                string imagePath = dir + Guid.NewGuid().ToString("N") + fileExt;  //全球唯一标示符，作为文件名
+                file.SaveAs(HttpContext.Request.MapPath(imagePath));
+                var pic = Image.FromFile(HttpContext.Request.MapPath(imagePath));
+                pic.Dispose();
+                return (true, imagePath);  // 上传成功，返回全路径 
             }
-            else
+            catch (Exception e)
             {
-                try
-                {
-                    string fileName = Path.GetFileName(file.FileName); //文件名
-                    string fileExt = Path.GetExtension(fileName);  //文件后缀名
-                    if (fileExt == ".jpg" || fileExt == ".gif" || fileExt == ".png" || fileExt == ".ico" || fileExt == "jpeg")  // 格式过滤
-                    {
-                        string dir = "/upload/images/" + folderName + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("yyyyMM") + "/" + DateTime.Now.ToString("yyyyMMdd") + "/";
-                        if (!Directory.Exists(Request.MapPath(dir)))
-                            Directory.CreateDirectory(Request.MapPath(dir));
-                        string imagePath = dir + Guid.NewGuid().ToString() + fileExt;  //全球唯一标示符，作为文件名
-                        file.SaveAs(Request.MapPath(imagePath));
-                        var pic = Image.FromFile(Request.MapPath(imagePath));
-                        if (pic.Width > width || pic.Height > height)
-                        {
-                            pic.Dispose();
-                            DeleteFile(Request.MapPath(imagePath));
-                            return $"no:图片尺寸不在(宽){width}像素 * (高){height}像素之间！不符合上传规则！";
-                        }
-                        pic.Dispose();
-                        return "ok:" + imagePath;  // 上传成功，返回全路径 
-                    }
-                    else
-                    {
-                        return "no:上传文件格式错误!!支持后缀为.jpg、.jpeg、png、.gif、.ico格式的图片上传";
-                    }
-                }
-                catch (Exception e)
-                {
-                    return "no:" + e.Message;
-                }
+                return (false, e.Message);
             }
         }
 
@@ -284,10 +282,9 @@ namespace QuickWeb.Controllers.Common
                     string fileExt = Path.GetExtension(fileName);  //文件后缀名
                     if (fileExt == ".jpg" || fileExt == ".gif" || fileExt == ".png" || fileExt == ".ico" || fileExt == "jpeg")  // 格式过滤
                     {
-                        string dir = "/upload/images/" + folderName + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("yyyyMM") + "/" + DateTime.Now.ToString("yyyyMMdd") + "/";
-                        if (!Directory.Exists(Request.MapPath(dir)))
-                            Directory.CreateDirectory(Request.MapPath(dir));
-                        string imagePath = dir + Guid.NewGuid().ToString() + fileExt;  //全球唯一标示符，作为文件名
+                        var dir = $"/upload/images/{folderName}/{DateTime.Now:yyyy}/{DateTime.Now:yyyyMM}/{DateTime.Now:yyyyMMdd}/";
+                        DirectoryCreates(Request.MapPath(dir));
+                        string imagePath = dir + Guid.NewGuid().ToString("N") + fileExt;  //全球唯一标示符，作为文件名
                         file.SaveAs(Request.MapPath(imagePath));
                         var pic = Image.FromFile(Request.MapPath(imagePath));
                         if (pic.Width > width || pic.Height > height)
@@ -321,66 +318,6 @@ namespace QuickWeb.Controllers.Common
         /// <param name="maxWidth">图片最大宽度</param>
         /// <param name="maxHeight">图片最大高度</param>
         /// <returns></returns>
-        public string ImageUpload(HttpPostedFileBase file, string folderName, int minWidth, int minHeight, int maxWidth, int maxHeight)
-        {
-            HttpContext.Request.ContentEncoding = Encoding.GetEncoding("UTF-8");
-            HttpContext.Response.ContentEncoding = Encoding.GetEncoding("UTF-8");
-            HttpContext.Response.Charset = "UTF-8";
-            if (file == null)
-            {
-                return "no:上传图片文件不能为空!";
-            }
-            else
-            {
-                try
-                {
-                    string fileName = Path.GetFileName(file.FileName); //文件名
-                    string fileExt = Path.GetExtension(fileName);  //文件后缀名
-                    if (fileExt == ".jpg" || fileExt == ".gif" || fileExt == ".png" || fileExt == ".ico" || fileExt == "jpeg")  // 格式过滤
-                    {
-                        string dir = "/upload/images/" + folderName + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("yyyyMM") + "/" + DateTime.Now.ToString("yyyyMMdd") + "/";
-                        if (!Directory.Exists(Request.MapPath(dir)))
-                            Directory.CreateDirectory(Request.MapPath(dir));
-                        string imagePath = dir + Guid.NewGuid().ToString() + fileExt;  //全球唯一标示符，作为文件名
-                        file.SaveAs(Request.MapPath(imagePath));
-                        var pic = Image.FromFile(Request.MapPath(imagePath));
-                        if (pic.Width > maxWidth || pic.Width < minWidth)
-                        {
-                            pic.Dispose();
-                            DeleteFile(Request.MapPath(imagePath));
-                            return $"no:图片宽度必须在{minWidth}像素 * {maxWidth}像素之间！不符合上传规则！";
-                        }
-                        if (pic.Height > maxHeight || pic.Height < minHeight)
-                        {
-                            pic.Dispose();
-                            DeleteFile(Request.MapPath(imagePath));
-                            return $"no:图片高度必须在{minHeight}像素 * {maxHeight}像素之间！不符合上传规则！";
-                        }
-                        pic.Dispose();
-                        return "ok:" + imagePath;  // 上传成功，返回全路径 
-                    }
-                    else
-                    {
-                        return "no:上传文件格式错误!!支持后缀为.jpg、.jpeg、png、.gif、.ico格式的图片上传";
-                    }
-                }
-                catch (Exception e)
-                {
-                    return "no:" + e.Message;
-                }
-            }
-        }
-
-        /// <summary>
-        /// 图片上传，对图片的大小有限制
-        /// </summary>
-        /// <param name="file">待上传的文件</param>
-        /// <param name="folderName">上传目录的名称，如：~/upload/images/teachers/...，则直接填写 teachers</param>
-        /// <param name="minWidth">图片最小宽度</param>
-        /// <param name="minHeight">图片最小高度</param>
-        /// <param name="maxWidth">图片最大宽度</param>
-        /// <param name="maxHeight">图片最大高度</param>
-        /// <returns></returns>
         public (bool, string) ImageUploadPro(HttpPostedFileBase file, string folderName, int minWidth, int minHeight, int maxWidth, int maxHeight)
         {
             HttpContext.Request.ContentEncoding = Encoding.GetEncoding("UTF-8");
@@ -398,10 +335,9 @@ namespace QuickWeb.Controllers.Common
                     string fileExt = Path.GetExtension(fileName);  //文件后缀名
                     if (fileExt == ".jpg" || fileExt == ".gif" || fileExt == ".png" || fileExt == ".ico" || fileExt == "jpeg")  // 格式过滤
                     {
-                        string dir = "/upload/images/" + folderName + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("yyyyMM") + "/" + DateTime.Now.ToString("yyyyMMdd") + "/";
-                        if (!Directory.Exists(Request.MapPath(dir)))
-                            Directory.CreateDirectory(Request.MapPath(dir));
-                        string imagePath = dir + Guid.NewGuid().ToString() + fileExt;  //全球唯一标示符，作为文件名
+                        var dir = $"/upload/images/{folderName}/{DateTime.Now:yyyy}/{DateTime.Now:yyyyMM}/{DateTime.Now:yyyyMMdd}/";
+                        DirectoryCreates(Request.MapPath(dir));
+                        string imagePath = dir + Guid.NewGuid().ToString("N") + fileExt;  //全球唯一标示符，作为文件名
                         file.SaveAs(Request.MapPath(imagePath));
                         var pic = Image.FromFile(Request.MapPath(imagePath));
                         if (pic.Width > maxWidth || pic.Width < minWidth)
@@ -432,159 +368,38 @@ namespace QuickWeb.Controllers.Common
         }
 
         /// <summary>
-        /// 通用图片上传
+        /// 图片上传并裁剪(x y w h为裁剪的矩形区域)
         /// </summary>
-        /// <param name="file">待上传的文件</param>
-        /// <param name="folderName">上传目录的名称，如：~/upload/images/teachers/...，则直接填写 teachers</param>
+        /// <param name="url">已经上传的图片的相对路径</param>
+        /// <param name="folderName">如：~/upload/images/teachers/...，则直接填写 teachers</param>
+        /// <param name="x">裁剪矩形左上角的 x 坐标</param>
+        /// <param name="y">裁剪矩形左上角的 y 坐标</param>
+        /// <param name="w">裁剪矩形的宽度</param>
+        /// <param name="h">裁剪矩形的高度</param>
         /// <returns></returns>
-        public string ImageUpload(HttpPostedFileBase file, string folderName)
+        public (bool, string) SaveImagePicWithCutPro(string url,string folderName, int x, int y, int w, int h)
         {
             HttpContext.Request.ContentEncoding = Encoding.GetEncoding("UTF-8");
             HttpContext.Response.ContentEncoding = Encoding.GetEncoding("UTF-8");
             HttpContext.Response.Charset = "UTF-8";
-            if (file == null)
-                return "no:上传图片文件不能为空!";
-
-            string fileName = Path.GetFileName(file.FileName); //文件名
-            string fileExt = Path.GetExtension(fileName);  //文件后缀名
-
-            if (fileExt == null)
-                return "no:无法识别的图片格式!!";
-
-            fileExt = fileExt.ToLower();
-            if (!".jpg".Equals(fileExt) && !".gif".Equals(fileExt) && !".png".Equals(fileExt) && !".ico".Equals(fileExt) && !"jpeg".Equals(fileExt))
-                return "no:上传文件格式错误!!支持后缀为.jpg、.jpeg、png、.gif、.ico格式的图片上传";
-
-            try
-            {
-                string dir = "/upload/images/" + folderName + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("yyyyMM") + "/" + DateTime.Now.ToString("yyyyMMdd") + "/";
-                if (!Directory.Exists(HttpContext.Request.MapPath(dir)))
-                    Directory.CreateDirectory(HttpContext.Request.MapPath(dir));
-                string imagePath = dir + Guid.NewGuid() + fileExt;  //全球唯一标示符，作为文件名
-                file.SaveAs(HttpContext.Request.MapPath(imagePath));
-                var pic = Image.FromFile(HttpContext.Request.MapPath(imagePath));
-                pic.Dispose();
-                return "ok:" + imagePath;  // 上传成功，返回全路径 
-            }
-            catch (Exception e)
-            {
-                return "no:" + e.Message;
-            }
-        }
-
-        /// <summary>
-        /// 通用图片上传
-        /// </summary>
-        /// <param name="file">待上传的文件</param>
-        /// <param name="folderName">上传目录的名称，如：~/upload/images/teachers/...，则直接填写 teachers</param>
-        /// <returns></returns>
-        public (bool, string) ImageUploadPro(HttpPostedFileBase file, string folderName)
-        {
-            HttpContext.Request.ContentEncoding = Encoding.GetEncoding("UTF-8");
-            HttpContext.Response.ContentEncoding = Encoding.GetEncoding("UTF-8");
-            HttpContext.Response.Charset = "UTF-8";
-            if (file == null)
-                return (false, "上传图片文件不能为空!");
-
-            string fileName = Path.GetFileName(file.FileName); //文件名
-            string fileExt = Path.GetExtension(fileName);  //文件后缀名
-
-            if (fileExt == null)
-                return (false, "无法识别的图片格式!!");
-
-            fileExt = fileExt.ToLower();
-            if (!".jpg".Equals(fileExt) && !".gif".Equals(fileExt) && !".png".Equals(fileExt) && !".ico".Equals(fileExt) && !"jpeg".Equals(fileExt))
-                return (false, "上传文件格式错误!!支持后缀为.jpg、.jpeg、png、.gif、.ico格式的图片上传");
-
-            try
-            {
-                string dir = "/upload/images/" + folderName + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("yyyyMM") + "/" + DateTime.Now.ToString("yyyyMMdd") + "/";
-                if (!Directory.Exists(HttpContext.Request.MapPath(dir)))
-                    Directory.CreateDirectory(HttpContext.Request.MapPath(dir));
-                string imagePath = dir + Guid.NewGuid() + fileExt;  //全球唯一标示符，作为文件名
-                file.SaveAs(HttpContext.Request.MapPath(imagePath));
-                var pic = Image.FromFile(HttpContext.Request.MapPath(imagePath));
-                pic.Dispose();
-                return (true, imagePath);  // 上传成功，返回全路径 
-            }
-            catch (Exception e)
-            {
-                return (false, e.Message);
-            }
-        }
-
-        /// <summary>
-        /// 图片上传并裁剪(xywh为裁剪的矩形区域)
-        /// </summary>
-        /// <param name="fileType">上传图片类型</param>
-        /// <param name="url">已经上传的图片的相对路径</param>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="w"></param>
-        /// <param name="h"></param>
-        /// <returns></returns>
-        public string SaveImagePicWithCut(FileType fileType, string url, int x, int y, int w, int h)
-        {
             if (System.IO.File.Exists(Server.MapPath(url)))
             {
                 try
                 {
-                    FileInfo fileInfo = new FileInfo(Server.MapPath(url));
-                    string path = CreateNewFile(fileType) + fileInfo.Extension;
-                    Bitmap oladImageBitmap = new Bitmap(Server.MapPath(url));
-                    // Bitmap resizeImage=ImageOperation.ResizeImage(image,500,)
-                    Bitmap tempImageBitmap = oladImageBitmap.CutImage(new Rectangle(x, y, w, h));
-                    //  image.Dispose();
+                    var dir = $"/upload/images/{folderName}/{DateTime.Now:yyyy}/{DateTime.Now:yyyyMM}/{DateTime.Now:yyyyMMdd}/";
+                    DirectoryCreates(dir);
+                    string filePath = dir + Guid.NewGuid().ToString("N")  + Path.GetExtension(url);
+                    Bitmap oldImageBitmap = new Bitmap(Server.MapPath(url));
+                    Bitmap tempImageBitmap = oldImageBitmap.CutImage(new Rectangle(x, y, w, h));
                     if (tempImageBitmap != null)
                     {
-                        tempImageBitmap.Save(Server.MapPath(path));
+                        tempImageBitmap.Save(Server.MapPath(filePath));
                         //释放资源
                         tempImageBitmap.Dispose();
-                        oladImageBitmap.Dispose();
+                        oldImageBitmap.Dispose();
                         //删除临时文件
                         System.IO.File.Delete(Server.MapPath(url));
-                        return "ok:" + path;
-                    }
-                }
-                catch (Exception e)
-                {
-                    return "no:" + e.Message;
-                }
-            }
-            return "no:上传路径不存在！";
-        }
-
-        /// <summary>
-        /// 图片上传并裁剪(xywh为裁剪的矩形区域)
-        /// </summary>
-        /// <param name="fileType">上传图片类型</param>
-        /// <param name="url">已经上传的图片的相对路径</param>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="w"></param>
-        /// <param name="h"></param>
-        /// <returns></returns>
-        public (bool, string) SaveImagePicWithCutPro(FileType fileType, string url, int x, int y, int w, int h)
-        {
-            if (System.IO.File.Exists(Server.MapPath(url)))
-            {
-                try
-                {
-                    FileInfo fileInfo = new FileInfo(Server.MapPath(url));
-                    string path = CreateNewFile(fileType) + fileInfo.Extension;
-                    Bitmap oladImageBitmap = new Bitmap(Server.MapPath(url));
-                    // Bitmap resizeImage=ImageOperation.ResizeImage(image,500,)
-                    Bitmap tempImageBitmap = oladImageBitmap.CutImage(new Rectangle(x, y, w, h));
-                    //  image.Dispose();
-                    if (tempImageBitmap != null)
-                    {
-                        tempImageBitmap.Save(Server.MapPath(path));
-                        //释放资源
-                        tempImageBitmap.Dispose();
-                        oladImageBitmap.Dispose();
-                        //删除临时文件
-                        System.IO.File.Delete(Server.MapPath(url));
-                        return (true, path);
+                        return (true, filePath);
                     }
                 }
                 catch (Exception e)
@@ -592,51 +407,7 @@ namespace QuickWeb.Controllers.Common
                     return (false, e.Message);
                 }
             }
-            return (false, "上传路径不存在！");
-        }
-
-        /// <summary>
-        /// 通用canvas上传图片
-        /// </summary>
-        /// <param name="stream">待上传的文件</param>
-        /// <param name="folderName">上传目录的名称，如：~/upload/images/teachers/...，则直接填写 teachers</param>
-        /// <param name="fileExt">默认的文件名后缀</param>
-        /// <returns></returns>
-        public string CanvasUpload(Stream stream, string folderName,string fileExt = ".png")
-        {
-            HttpContext.Request.ContentEncoding = Encoding.GetEncoding("UTF-8");
-            HttpContext.Response.ContentEncoding = Encoding.GetEncoding("UTF-8");
-            HttpContext.Response.Charset = "UTF-8";
-            
-            if (stream == null)
-                return "no:上传图片文件不能为空!";
-
-            if (fileExt == null)
-                return "no:无法识别的图片格式!!";
-
-            fileExt = fileExt.ToLower();
-
-            if (!".jpg".Equals(fileExt) && !".gif".Equals(fileExt) && !".png".Equals(fileExt) && !".ico".Equals(fileExt) && !"jpeg".Equals(fileExt))
-                return "no:上传文件格式错误!!支持后缀为.jpg、.jpeg、png、.gif、.ico格式的图片上传";
-
-            try
-            {
-                string dir = "/upload/images/" + folderName + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("yyyyMM") + "/" + DateTime.Now.ToString("yyyyMMdd") + "/";
-                if (!Directory.Exists(HttpContext.Request.MapPath(dir)))
-                    Directory.CreateDirectory(HttpContext.Request.MapPath(dir));
-                string imagePath = dir + Guid.NewGuid() + fileExt;  //全球唯一标示符，作为文件名
-                byte[] dataOne = new byte[stream.Length];
-                stream.Read(dataOne, 0, dataOne.Length);
-                using (var fs = new FileStream(HttpContext.Request.MapPath(imagePath), FileMode.Create, FileAccess.Write))
-                {
-                    fs.Write(dataOne, 0, dataOne.Length);
-                    return "ok:" + imagePath;  // 上传成功，返回全路径 
-                }
-            }
-            catch (Exception e)
-            {
-                return "no:" + e.Message;
-            }
+            return (false, "图片不存在！");
         }
 
         /// <summary>
@@ -664,10 +435,9 @@ namespace QuickWeb.Controllers.Common
 
             try
             {
-                string dir = "/upload/images/" + folderName + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("yyyyMM") + "/" + DateTime.Now.ToString("yyyyMMdd") + "/";
-                if (!Directory.Exists(HttpContext.Request.MapPath(dir)))
-                    Directory.CreateDirectory(HttpContext.Request.MapPath(dir));
-                string imagePath = dir + Guid.NewGuid() + fileExt;  //全球唯一标示符，作为文件名
+                var dir = $"/upload/images/{folderName}/{DateTime.Now:yyyy}/{DateTime.Now:yyyyMM}/{DateTime.Now:yyyyMMdd}/";
+                DirectoryCreates(HttpContext.Request.MapPath(dir));
+                string imagePath = dir + Guid.NewGuid().ToString("N") + fileExt;  //全球唯一标示符，作为文件名
                 byte[] dataOne = new byte[stream.Length];
                 stream.Read(dataOne, 0, dataOne.Length);
                 using (var fs = new FileStream(HttpContext.Request.MapPath(imagePath), FileMode.Create, FileAccess.Write))
@@ -689,40 +459,33 @@ namespace QuickWeb.Controllers.Common
         /// <summary>
         /// 通用文件上传
         /// </summary>
-        /// <param name="file">待上传的文件</param>
+        /// <param name="fileInput">file表单参数名</param>
         /// <param name="folderName">上传目录的名称，如：~/upload/excels/teachers/...，则直接填写 excels/teachers</param>
-        /// <param name="extName">文件后缀</param>
         /// <returns></returns>
-        public string FileUpload(HttpPostedFileBase file, string folderName, string extName = "")
+        public (bool,string) FileUpload(string fileInput, string folderName)
         {
             HttpContext.Request.ContentEncoding = Encoding.GetEncoding("UTF-8");
             HttpContext.Response.ContentEncoding = Encoding.GetEncoding("UTF-8");
             HttpContext.Response.Charset = "UTF-8";
-            if (file == null)
-                return "no:上传文件不能为空!";
-
-            string fileName = Path.GetFileName(file.FileName); //文件名
-            string fileExt = Path.GetExtension(fileName);  //文件后缀名
-
-            if (fileExt == null)
-                return "no:无法识别的文件格式!!";
-
-            if (!string.IsNullOrEmpty(extName))
-                if (!fileExt.ToLower().Equals(extName))
-                    return "no:上传文件格式错误!!";
-
             try
             {
-                string dir = "/upload/" + folderName + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("yyyyMM") + "/" + DateTime.Now.ToString("yyyyMMdd") + "/";
-                if (!Directory.Exists(HttpContext.Request.MapPath(dir)))
-                    Directory.CreateDirectory(HttpContext.Request.MapPath(dir));
-                string filePath = dir + Guid.NewGuid() + fileExt; //全球唯一标示符，作为文件名 
-                file.SaveAs(HttpContext.Request.MapPath(filePath));
-                return "ok:" + filePath;  // 上传成功，返回全路径  
+                if (string.IsNullOrEmpty(fileInput))
+                    fileInput = "file";
+                if (string.IsNullOrEmpty(folderName))
+                    folderName = "files";
+                HttpPostedFileBase file = Request.Files[fileInput];
+                if (file == null)
+                    return (false,"上传文件为空！请勿非法提交");
+                if (string.IsNullOrEmpty(file.ContentType) || (file.ContentType).IndexOf("image/", StringComparison.Ordinal) == -1)
+                {
+                    return (false,"未识别的文件格式！请勿非法提交");
+                }
+                var result = FileUploadPro(file, folderName);
+                return result;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return "no:" + "上传文件失败";  // 上传成功，返回全路径  
+                return (false,e.Message);
             }
         }
 
@@ -752,10 +515,9 @@ namespace QuickWeb.Controllers.Common
                     return (false, "上传文件格式错误!!");
             try
             {
-                string dir = "/upload/" + folderName + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("yyyyMM") + "/" + DateTime.Now.ToString("yyyyMMdd") + "/";
-                if (!Directory.Exists(HttpContext.Request.MapPath(dir)))
-                    Directory.CreateDirectory(HttpContext.Request.MapPath(dir));
-                string filePath = dir + Guid.NewGuid() + fileExt; //全球唯一标示符，作为文件名 
+                var dir = $"/upload/{folderName}/{DateTime.Now:yyyy}/{DateTime.Now:yyyyMM}/{DateTime.Now:yyyyMMdd}/";
+                DirectoryCreates(HttpContext.Request.MapPath(dir));
+                string filePath = dir + Guid.NewGuid().ToString("N") + fileExt;  //全球唯一标示符，作为文件名
                 file.SaveAs(HttpContext.Request.MapPath(filePath));
                 return (true, filePath);  // 上传成功，返回全路径  
             }
@@ -767,156 +529,27 @@ namespace QuickWeb.Controllers.Common
 
         #endregion
 
-        #region 获取当前访客IP
-        protected string GetCurrentIp()
-        {
-            string userIp = "127.0.0.1";
-            try
-            {
-                if (!string.IsNullOrEmpty(Request.ServerVariables["HTTP_X_FORWARDED_FOR"]))
-                    userIp = Request.ServerVariables["REMOTE_ADDR"];
-                else
-                    userIp = Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
-                if (string.IsNullOrEmpty(userIp))
-                    userIp = Request.UserHostAddress;
-                return userIp;
-            }
-            catch
-            {
-                return userIp;
-            }
-        }
-
-
-
-        #endregion
-
-        #region 获取服务器域名
-
-        protected string GetServerDomain()
-        {
-            string curDomain;
-            if (Request != null && Request.Url != null)
-            {
-                try
-                {
-                    string rawurl = Request.RawUrl;
-                    if (!string.IsNullOrEmpty(rawurl) && !"/".Equals(rawurl))
-                    {
-                        curDomain = Request.Url.ToString().Replace(Request.RawUrl, "");
-                    }
-                    else
-                    {
-                        curDomain = Request.Url.ToString();
-                    }
-                }
-                catch
-                {
-                    curDomain = "http://localhost:61266";
-                }
-            }
-            else
-            {
-                curDomain = "http://localhost:61266";
-            }
-            return curDomain;
-        }
-
-        #endregion
-
-        #region 获取服务器IP
-        protected string GetServerIp()
-        {
-            string curIp = "";
-            curIp = GetServerDomain().Replace("http://", ""); //去掉"http://"
-            curIp = curIp.Substring(0, (curIp.IndexOf(':') == -1 ? curIp.Length : curIp.IndexOf(':')));//去掉端口号
-            if (curIp.Split('.').Length != 3)   //如果没有三个'.'，则域名不是IP
-            {
-                IPAddress[] ipAddresses = Dns.GetHostAddresses(curIp);
-                for (int i = ipAddresses.Length - 1; i >= 0;)
-                {
-                    curIp = ipAddresses[i].ToString();
-                    break;
-                }
-            }
-            if (curIp == "127.0.0.1")
-            {
-                IPAddress[] ipAddresse = Dns.GetHostAddresses(Dns.GetHostName());
-                for (int i = ipAddresse.Length - 1; i >= 0;)
-                {
-                    curIp = ipAddresse[i].ToString();
-                    break;
-                }
-            }
-            return curIp;
-        }
-        #endregion
-
         #region 文件上传辅助方法
 
-        #region 创建目录
-
-        private string GetPath(FileType fileType)
+        /// <summary>
+        /// 替换文件(绝对路径)
+        /// </summary>
+        /// <param name="oldFilePath"></param>
+        /// <param name="folderName"></param>
+        /// <param name="newFile"></param>
+        /// <returns></returns>
+        protected (bool, string) ReplaceFile(string oldFilePath, string folderName, HttpPostedFileBase newFile)
         {
-            var prefix = $"/upload/images/{fileType.GetType().Name.ToLower()}/";
-            var suffix = DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("yyyyMM") + "/" + DateTime.Now.ToString("yyyyMMdd") + "/";
-            var path = prefix + suffix;
-            if (!DirectoryExists(Server.MapPath(path)))
-                Directory.CreateDirectory(Server.MapPath(path));
-            return path;
-        }
-
-        private string CreateNewFile(FileType fileType)
-        {
-            return GetPath(fileType) + Guid.NewGuid().ToString("N");
-        }
-
-        private string CreateNewFile(FileType fileType, string fileExt)
-        {
-            return GetPath(fileType) + Guid.NewGuid().ToString("N") + fileExt;
-        }
-
-        private string CreateNewFileWithFileName(FileType fileType, string fileName)
-        {
-            return GetPath(fileType) + Guid.NewGuid().ToString("N") + Path.GetExtension(fileName);
-        }
-
-        #endregion
-
-        // 上传文件
-        protected (string, bool) SaveFile(FileType fileType, HttpPostedFileBase file)
-        {
-            if (null == file || file.FileName.IsNullOrEmpty() || file.ContentLength == 0)
-                return ("保存文件为空", false);
-            string fileName = Path.GetFileName(file.FileName);
-            string fileExt = Path.GetExtension(fileName);
-            string filePath = CreateNewFile(fileType, fileExt);
+            var result = FileUploadPro(newFile,folderName);
+            if (!result.Item1) return result;
             try
             {
-                file.SaveAs(Server.MapPath(filePath));
-                return (filePath, true);
+                if (FileExists(oldFilePath))
+                    DeleteFile(oldFilePath);
             }
             catch (Exception e)
             {
-                return (e.Message, false);
-            }
-        }
-
-        // 替换文件(绝对路径)
-        protected (string, bool) ReplaceFile(string oldFilePath, FileType newFileType, HttpPostedFileBase newFile)
-        {
-            var result = SaveFile(newFileType, newFile);
-            if (result.Item2)
-            {
-                try
-                {
-                    if (FileExists(oldFilePath))
-                        DeleteFile(oldFilePath);
-                }
-                catch (Exception e)
-                {
-                    return (e.Message, false);
-                }
+                return (false,e.Message);
             }
             return result;
         }
@@ -1009,12 +642,11 @@ namespace QuickWeb.Controllers.Common
             }
             catch
             {
-
+                // ignore
             }
             finally
             {
-                if (fs != null)
-                    fs.Close();
+                fs?.Close();
             }
             return true;
         }
@@ -1030,7 +662,100 @@ namespace QuickWeb.Controllers.Common
         /// <param name="dirPath"></param>
         /// <returns></returns>
         protected bool DirectoryExists(string dirPath) => System.IO.Directory.Exists(dirPath);
+        /// <summary>
+        /// 文件夹创建(绝对路径)
+        /// </summary>
+        /// <param name="dirPath"></param>
+        protected void DirectoryCreates(string dirPath)
+        {
+            if(!DirectoryExists(dirPath)) System.IO.Directory.CreateDirectory(dirPath);
+        } 
+        
+        #endregion
 
+        #region 获取当前访客IP
+        protected string GetCurrentIp()
+        {
+            string userIp = "127.0.0.1";
+            try
+            {
+                if (!string.IsNullOrEmpty(Request.ServerVariables["HTTP_X_FORWARDED_FOR"]))
+                    userIp = Request.ServerVariables["REMOTE_ADDR"];
+                else
+                    userIp = Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+                if (string.IsNullOrEmpty(userIp))
+                    userIp = Request.UserHostAddress;
+                return userIp;
+            }
+            catch
+            {
+                return userIp;
+            }
+        }
+
+
+
+        #endregion
+
+        #region 获取服务器域名
+
+        protected string GetServerDomain()
+        {
+            string curDomain;
+            if (Request != null && Request.Url != null)
+            {
+                try
+                {
+                    string rawurl = Request.RawUrl;
+                    if (!string.IsNullOrEmpty(rawurl) && !"/".Equals(rawurl))
+                    {
+                        curDomain = Request.Url.ToString().Replace(Request.RawUrl, "");
+                    }
+                    else
+                    {
+                        curDomain = Request.Url.ToString();
+                    }
+                }
+                catch
+                {
+                    curDomain = "http://localhost:61266";
+                }
+            }
+            else
+            {
+                curDomain = "http://localhost:61266";
+            }
+            return curDomain;
+        }
+
+        #endregion
+
+        #region 获取服务器IP
+        protected string GetServerIp()
+        {
+            string curIp = "";
+            curIp = GetServerDomain().Replace("http://", ""); //去掉"http://"
+            curIp = curIp.Substring(0, (curIp.IndexOf(':') == -1 ? curIp.Length : curIp.IndexOf(':')));//去掉端口号
+            if (curIp.Split('.').Length != 3)   //如果没有三个'.'，则域名不是IP
+            {
+                IPAddress[] ipAddresses = Dns.GetHostAddresses(curIp);
+                for (int i = ipAddresses.Length - 1; i >= 0;)
+                {
+                    curIp = ipAddresses[i].ToString();
+                    break;
+                }
+            }
+            if (curIp == "127.0.0.1")
+            {
+                IPAddress[] ipAddresse = Dns.GetHostAddresses(Dns.GetHostName());
+                for (int i = ipAddresse.Length - 1; i >= 0;)
+                {
+                    curIp = ipAddresse[i].ToString();
+                    break;
+                }
+            }
+            return curIp;
+        }
         #endregion
 
         #region 分页计算总页数
@@ -1074,6 +799,15 @@ namespace QuickWeb.Controllers.Common
                 return strValue;
             }
             return "";
+        }
+        #endregion
+
+        #region 通用Id非法校验
+        protected bool IsIllegalId(int ? id)
+        {
+            if(id == null || id <= 0)
+                return true;
+            return false;
         }
         #endregion
     }

@@ -7,9 +7,9 @@ namespace Quick.Models.Entity.Table
     ///<summary>
     ///
     ///</summary>
-    public partial class snake_articles
+    public partial class snake_article
     {
-           public snake_articles(){
+           public snake_article(){
 
 
            }

@@ -35,8 +35,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\MySql.Data.dll</HintPath>
     </Reference>
-    <Reference Include="SqlSugar, Version=4.9.9.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\sqlSugar.4.9.9.1\lib\SqlSugar.dll</HintPath>
+    <Reference Include="SqlSugar, Version=4.9.9.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\sqlSugar.4.9.9.2\lib\SqlSugar.dll</HintPath>
     </Reference>
     <Reference Include="SyntacticSugar, Version=2.4.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SyntacticSugar.2.4.1\lib\net40\SyntacticSugar.dll</HintPath>
@@ -58,7 +58,7 @@
     <Compile Include="Common\SessionKey.cs" />
     <Compile Include="Dto\BaseDto.cs" />
     <Compile Include="Dto\UserInfoOutputDto.cs" />
-    <Compile Include="Entity\Table\snake_articles.cs" />
+    <Compile Include="Entity\Table\snake_article.cs" />
     <Compile Include="Entity\Table\snake_node.cs" />
     <Compile Include="Entity\Table\snake_role.cs" />
     <Compile Include="Entity\Table\snake_user.cs" />

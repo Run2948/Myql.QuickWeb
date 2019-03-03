@@ -11,7 +11,7 @@
 <#@ import namespace="System.IO" #>
 <#@ import namespace="System.Web" #>
 <#@ assembly name="$(projectDir)\lib\MySql.Data.dll" #>
-<#@ assembly name="$(SolutionDir)\packages\sqlSugar.4.9.9.1\lib\SqlSugar.dll" #>
+<#@ assembly name="$(SolutionDir)\packages\sqlSugar.4.9.9.2\lib\SqlSugar.dll" #>
 <#@ output extension=".txt" #>
 /* =============================================================================
 *
