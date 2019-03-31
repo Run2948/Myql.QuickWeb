@@ -86,5 +86,11 @@ namespace QuickWeb.Controllers.Common
             return js;
         }
         #endregion
+
+        #region 跳转自定义错误页面
+        protected ActionResult Error() => RedirectToAction("Index", "Error");
+        protected ActionResult ParamsError() => RedirectToAction("ParamsError", "Error");
+        protected ActionResult NoOrDeleted() => RedirectToAction("NoOrDeleted", "Error");
+        #endregion
     }
 }

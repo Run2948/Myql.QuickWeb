@@ -17,7 +17,7 @@
         </div>
         <div class="ibox-content">
             <div class="form-group clearfix col-sm-1">
-                @if(Auth.Check("role/roleadd"))
+                @if (Auth.Check("role/roleadd"))
                 {
                     <a href="@Url.Action("RoleAdd")" class="btn btn-outline btn-primary">添加角色</a>
                 }
@@ -41,11 +41,11 @@
                 <div class="example">
                     <table id="cusTable">
                         <thead>
-                        <tr>
-                            <th data-field="id">角色ID</th>
-                            <th data-field="role_name">角色名称</th>
-                            <th data-field="operate">操作</th>
-                        </tr>
+                            <tr>
+                                <th data-field="id">角色ID</th>
+                                <th data-field="role_name">角色名称</th>
+                                <th data-field="operate">操作</th>
+                            </tr>
                         </thead>
                     </table>
                 </div>
@@ -55,8 +55,8 @@
     </div>
     <!-- End Panel Other -->
 </div>
-<!-- 角色分配 -->
-<div class="zTreeDemoBackground left" style="display: none;z-index:1000000;" id="role">
+<!-- 角色分配 zTreeDemoBackground -->
+<div class="left" style="display: none;z-index:1000000;" id="role">
     <input type="hidden" id="node_id">
     <div class="form-group">
         <div class="col-sm-5 col-sm-offset-2">
@@ -136,7 +136,7 @@
                                 btn += ' <a href="javascript:roleDel(' + row.id + ')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> 删除</a> ';
                             if ('True' == '@Auth.Check("role/giveaccess")')
                                 btn += ' <a href="javascript:giveQx(' + row.id + ')" class="btn btn-info btn-sm"><i class="fa fa-institution"></i> 分配权限</a>';
-                            return btn;                             
+                            return btn;
                         }
                     }]
             });
@@ -210,6 +210,7 @@
                 }
             });
         }
+
         //确认分配权限
         $("#postform").click(function () {
             var zTree = $.fn.zTree.getZTreeObj("treeType");

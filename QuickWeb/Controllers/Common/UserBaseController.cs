@@ -46,11 +46,5 @@ namespace QuickWeb.Controllers.Common
         }
 
         #endregion
-
-        #region 跳转自定义错误页面
-        protected ActionResult Error() => RedirectToAction("Index", "Error");
-        protected ActionResult ParamsError() => RedirectToAction("Index", "Error");
-        protected ActionResult NoOrDeleted() => RedirectToAction("Index", "Error");
-        #endregion
     }
 }
